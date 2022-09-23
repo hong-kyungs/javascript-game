@@ -11,12 +11,11 @@ const onInput = (event) => {
 };
 
 const onClickButton = () => {
-	//제시어가 비어있는가?
-	if (!word) {
+	//제시어가 비어있는가? 또는 입력한 단어가 올바른가?
+	if (!word || word[word.length - 1] === newWord[0]) {
 		//비어있다
 		word = newWord; //입력한 단어가 제시어가 된다.
 		givenWord.textContent = word;
-		input.value = '';
 		const order = parseInt(orderNumber.textContent); // 현재순서
 		if (order + 1 > number) {
 			orderNumber.textContent = 1;
@@ -24,22 +23,11 @@ const onClickButton = () => {
 			orderNumber.textContent = order + 1;
 		}
 	} else {
-		//비어 있지 않다.
-		if (word[word.length - 1] === newWord[0]) {
-			// 입력한 단어가 올바른가?
-			word = newWord; //입력한 단어가 제시어가 된다.
-			givenWord.textContent = word;
-			input.value = '';
-			const order = parseInt(orderNumber.textContent); // 현재순서
-			if (order + 1 > number) {
-				orderNumber.textContent = 1;
-			} else {
-				orderNumber.textContent = order + 1;
-			}
-		} else {
-			// 올바르지 않은가?
-		}
+		// 올바르지 않은가?
+		alert('올바르지 않은 단어입니다.');
 	}
+	input.value = '';
+	input.focus();
 };
 
 input.addEventListener('input', onInput);
