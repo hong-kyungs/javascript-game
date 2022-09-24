@@ -6,12 +6,15 @@ Javascript로 웹게임 만들기 - by ZeroCho
 > 게임인원수는 게임시작시 설정가능하고, 3글자 단어를 올바르게 넣어야한 통과.
 
 - 게임인원수 설정
+
   <img src="image/word-relay1.png" width="300" height="200"/>
 
 - 제시한 단어가 3글자가 아닐경우 에러메세지
+
   <img src="image/word-relay2.png" width="300" height="200"/>
 
 - 제시간 단어가 올바르지 않을 경우 에러메세지
+
   <img src="image/word-relay3.png" width="300" height="200"/>
 
 - 게임참여자 순번 표시하기
@@ -26,3 +29,5 @@ if (order + 1 > number) {
 ```
 
 ---
+
+`
