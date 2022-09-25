@@ -56,6 +56,7 @@ document.querySelector('#calculate').addEventListener('click', () => {
 		switch (operator) {
 			case '+':
 				$result.value = parseInt(numOne) + parseInt(numTwo);
+				//break를 걸어줘야 멈춘다. 그렇지 않으면, 아래 모든 동작문이 실행된다.
 				break;
 			//-, *, / 는 문자열을 숫자로 바꾸기 때문에 굳이 parseInt를 해주지 않아도 된다.
 			case '-':
@@ -70,14 +71,31 @@ document.querySelector('#calculate').addEventListener('click', () => {
 			default:
 				break;
 		}
+		/*
+		if (operator === '+') {
+			$result.value = parseInt(numOne) + parseInt(numTwo);
+		} else if (operator === '-') {
+			$result.value = numOne - numTwo;
+		} else if (operator === '*') {
+			$result.value = numOne * numTwo;
+		} else if (operator === '/') {
+			$result.value = numOne / numTwo;
+		}
+		*/
 	} else {
 		alert('숫자를 먼저 입력하세요.');
 	}
 });
 
-document.querySelector('#clear').addEventListener('click', () => {});
+document.querySelector('#clear').addEventListener('click', () => {
+	numOne = '';
+	operator = '';
+	numTwo = '';
+	$operator.value = '';
+	$result.value = '';
+});
 
-/*
+/* practice!!!
 const func = (msg) => () => {
 	console.log(msg);
 };
