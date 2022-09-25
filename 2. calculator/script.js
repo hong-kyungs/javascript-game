@@ -8,11 +8,17 @@ const onClickNumber = (event) => {
 	//함수안에 함수가 있다. or 함수가 함수를 리턴하고 있다 라고 이해하면 된다.
 	//=>1. 고차함수(high order function) : () => () => {}
 	//=>2. 고차함수를 쓰지 않고 중복을 제거하는 방법 () => {}
-	if (operator) {
-		numTwo += event.target.textContent;
-	} else {
+	if (!operator) {
+		//비어있다
 		numOne += event.target.textContent;
+		$result.value += event.target.textContent;
+		return;
 	}
+	//비어있지 않다
+	if (!numTwo) {
+		$result.value = '';
+	}
+	numTwo += event.target.textContent;
 	$result.value += event.target.textContent;
 };
 
@@ -26,9 +32,59 @@ document.querySelector('#num-6').addEventListener('click', onClickNumber);
 document.querySelector('#num-7').addEventListener('click', onClickNumber);
 document.querySelector('#num-8').addEventListener('click', onClickNumber);
 document.querySelector('#num-9').addEventListener('click', onClickNumber);
-document.querySelector('#plus').addEventListener('click', () => {});
-document.querySelector('#minus').addEventListener('click', () => {});
-document.querySelector('#divide').addEventListener('click', () => {});
-document.querySelector('#multiply').addEventListener('click', () => {});
-document.querySelector('#calculate').addEventListener('click', () => {});
+
+const onClickOperator = (op) => () => {
+	if (numOne) {
+		operator = op;
+		$operator.value = op;
+	} else {
+		alert('숫자를 먼저 입력하세요.');
+	}
+};
+document.querySelector('#plus').addEventListener('click', onClickOperator('+'));
+document
+	.querySelector('#minus')
+	.addEventListener('click', onClickOperator('-'));
+document
+	.querySelector('#divide')
+	.addEventListener('click', onClickOperator('/'));
+document
+	.querySelector('#multiply')
+	.addEventListener('click', onClickOperator('*'));
+document.querySelector('#calculate').addEventListener('click', () => {
+	if (numTwo) {
+		switch (operator) {
+			case '+':
+				$result.value = parseInt(numOne) + parseInt(numTwo);
+				break;
+			//-, *, / 는 문자열을 숫자로 바꾸기 때문에 굳이 parseInt를 해주지 않아도 된다.
+			case '-':
+				$result.value = numOne - numTwo;
+				break;
+			case '*':
+				$result.value = numOne * numTwo;
+				break;
+			case '/':
+				$result.value = numOne / numTwo;
+				break;
+			default:
+				break;
+		}
+	} else {
+		alert('숫자를 먼저 입력하세요.');
+	}
+});
+
 document.querySelector('#clear').addEventListener('click', () => {});
+
+/*
+const func = (msg) => () => {
+	console.log(msg);
+};
+const innerFunc1 = func('Hello');
+const innerFunc2 = func('Java');
+const innerFunc3 = func();
+innerFunc1();
+innerFunc2();
+innerFunc3();
+*/
