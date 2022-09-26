@@ -71,6 +71,11 @@ document.querySelector('#calculate').addEventListener('click', () => {
 			default:
 				break;
 		}
+		//연달아 계산하기 추가.
+		$operator.value = '';
+		numOne = $result.value;
+		operator = '';
+		numTwo = '';
 		/*
 		if (operator === '+') {
 			$result.value = parseInt(numOne) + parseInt(numTwo);
