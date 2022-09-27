@@ -33,8 +33,39 @@ document.querySelector('#num-7').addEventListener('click', onClickNumber);
 document.querySelector('#num-8').addEventListener('click', onClickNumber);
 document.querySelector('#num-9').addEventListener('click', onClickNumber);
 
+const calculate = () => {
+	switch (operator) {
+		case '+':
+			$result.value = parseInt(numOne) + parseInt(numTwo);
+			//break를 걸어줘야 멈춘다. 그렇지 않으면, 아래 모든 동작문이 실행된다.
+			break;
+		//-, *, / 는 문자열을 숫자로 바꾸기 때문에 굳이 parseInt를 해주지 않아도 된다.
+		case '-':
+			$result.value = numOne - numTwo;
+			break;
+		case '*':
+			$result.value = numOne * numTwo;
+			break;
+		case '/':
+			$result.value = numOne / numTwo;
+			break;
+		default:
+			break;
+	}
+};
+
 const onClickOperator = (op) => () => {
-	if (numOne) {
+	if (op === '-' && !numOne) {
+		numOne += op;
+		$result.value = op;
+	}
+	if (numTwo) {
+		calculate();
+		operator = op;
+		$operator.value = op;
+		numOne = $result.value;
+		numTwo = '';
+	} else if (numOne) {
 		operator = op;
 		$operator.value = op;
 	} else {
@@ -53,24 +84,7 @@ document
 	.addEventListener('click', onClickOperator('*'));
 document.querySelector('#calculate').addEventListener('click', () => {
 	if (numTwo) {
-		switch (operator) {
-			case '+':
-				$result.value = parseInt(numOne) + parseInt(numTwo);
-				//break를 걸어줘야 멈춘다. 그렇지 않으면, 아래 모든 동작문이 실행된다.
-				break;
-			//-, *, / 는 문자열을 숫자로 바꾸기 때문에 굳이 parseInt를 해주지 않아도 된다.
-			case '-':
-				$result.value = numOne - numTwo;
-				break;
-			case '*':
-				$result.value = numOne * numTwo;
-				break;
-			case '/':
-				$result.value = numOne / numTwo;
-				break;
-			default:
-				break;
-		}
+		calculate();
 		//연달아 계산하기 추가.
 		$operator.value = '';
 		numOne = $result.value;
