@@ -44,11 +44,24 @@ form.addEventListener('submit', (event) => {
 	const value = input.value;
 	input.value = '';
 	//검사를 통과하면 true를 반환하고, 실패하면 false를 반환한다.
-	if (checkInput(value)) {
-		//입력값 문제없음.
-		tries.push(value);
-	} else {
+
+	if (!checkInput(value)) {
+		return;
 		//에러있음
 		//alert의 입력값은 undefined 고, checkInput에서 걸리는게 있어서 alert가 출력되면 undefinded이 반환되고, undefined는 false로 처리된다.
 	}
+
+	//입력값 문제없음.
+	if (answer.join('') === value) {
+		//[3, 1, 4, 6] -> '3146'
+		//
+		logs.textContent = '홈런';
+		return;
+	}
+	if (tries.length >= 9) {
+		const message = document.createTextNode(`패배! 정답은 ${answer.join('')}`);
+		logs.appendChild(message);
+		return;
+	}
+	tries.push(value);
 });
