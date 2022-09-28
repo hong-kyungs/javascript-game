@@ -38,6 +38,12 @@ function checkInput(input) {
 	return true;
 }
 
+function defeated() {
+	const message = document.createTextNode(`패배! 정답은 ${answer.join('')}`);
+	logs.appendChild(message);
+}
+
+let out = 0; //sumbit안쪽에 넣으면 submit할때마다 out이 선언되고, submit이 끝날때 아웃이 사라진다.
 //버튼 태그에 clicl이벤트를 달지 않고, form태그에 submit 이벤트를 달았다. input을 form태그로 감싸서 submit이벤트를 달면 enter키를 눌러 값을 제출할 수 있음.
 form.addEventListener('submit', (event) => {
 	event.preventDefault(); // 기본 동작 막기
@@ -60,8 +66,7 @@ form.addEventListener('submit', (event) => {
 	}
 	if (tries.length >= 9) {
 		//순서도에서는 10번 시도했는가? 이지만 9이상으로 작성해야 한다.
-		const message = document.createTextNode(`패배! 정답은 ${answer.join('')}`);
-		logs.appendChild(message);
+		defeated();
 		return;
 	}
 
@@ -82,10 +87,31 @@ form.addEventListener('submit', (event) => {
 			}
 		}
 	}
-	logs.append(
-		//문자열은 createTextNode를 쓰지 않고 문자열 그대로 써줘도 된다.
-		`${value}: ${strike} 스트라이크 ${ball} 볼`,
-		document.createElement('br')
-	);
+
+	if (strike === 0 && ball === 0) {
+		out++;
+		let outSpan = document.createElement('span');
+		outSpan.className = 'outSpan';
+		outSpan.innerHTML = `${out} OUT!`;
+		logs.append(`${value} : `, outSpan, document.createElement('br'));
+	} else {
+		let div = document.createElement('div');
+		div.innerHTML = `
+    ${value} : <span class="strike">${strike} 스트라이크</span> <span class="ball">${ball} 볼</span>
+    `;
+
+		logs.append(
+			//문자열은 createTextNode를 쓰지 않고 문자열 그대로 써줘도 된다.
+			// `${value}: ${strike} 스트라이크 ${ball} 볼`,
+			// document.createElement('br')
+			div
+		);
+	}
+
+	if (out === 3) {
+		defeated();
+		return;
+	}
+
 	tries.push(value);
 });
