@@ -55,10 +55,11 @@ const calculate = () => {
 };
 
 const onClickOperator = (op) => () => {
-	if (op === '-' && !numOne) {
-		numOne += op;
-		$result.value = op;
-	}
+	// 마이너스 추가하기 실패ㅠㅠ
+	// if (op === '-' && !numOne) {
+	// 	numOne += op;
+	// 	$result.value = op;
+	// }
 	if (numTwo) {
 		calculate();
 		operator = op;

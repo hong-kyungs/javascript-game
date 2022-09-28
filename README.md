@@ -32,4 +32,10 @@ if (order + 1 > number) {
 
 ## 2. 계산기
 
-> 간단 계산기 만들기
+> 간단 계산기 만들기  
+>- 숫자를 넣지 않으면, 에러메세지생성  
+>- 연달아 계산 가능  
+
+- 계산기  
+<img src="image/calculator.gif" width="300" height="200"/>
+
