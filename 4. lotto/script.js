@@ -25,9 +25,55 @@ console.log(shuffle);
 
 //현재 shuffle안에는 45개의 공이 뽑힌 순서대로 배열되어있다.
 /*
-slice(0, 6) - index[0]부터 6개를 자르는 method
+slice(0, 6) - index[0]부터 index[6]개를 자르는 method
 sort((a, b) => a - b) - 오름차순으로 정렬하는 method
 */
 const winBall = shuffle.slice(0, 6).sort((a, b) => a - b);
 const bonus = shuffle[6];
 console.log(winBall, bonus);
+
+const $result = document.querySelector('#result');
+setTimeout(() => {
+	const $ball = document.createElement('div');
+	$ball.className = 'ball';
+	$ball.textContent = winBall[0];
+	$result.appendChild($ball);
+}, 1000);
+setTimeout(() => {
+	const $ball = document.createElement('div');
+	$ball.className = 'ball';
+	$ball.textContent = winBall[1];
+	$result.appendChild($ball);
+}, 2000);
+setTimeout(() => {
+	const $ball = document.createElement('div');
+	$ball.className = 'ball';
+	$ball.textContent = winBall[2];
+	$result.appendChild($ball);
+}, 3000);
+setTimeout(() => {
+	const $ball = document.createElement('div');
+	$ball.className = 'ball';
+	$ball.textContent = winBall[3];
+	$result.appendChild($ball);
+}, 4000);
+setTimeout(() => {
+	const $ball = document.createElement('div');
+	$ball.className = 'ball';
+	$ball.textContent = winBall[4];
+	$result.appendChild($ball);
+}, 5000);
+setTimeout(() => {
+	const $ball = document.createElement('div');
+	$ball.className = 'ball';
+	$ball.textContent = winBall[5];
+	$result.appendChild($ball);
+}, 6000);
+
+const $bonus = document.querySelector('#bonus');
+setTimeout(() => {
+	const $ball = document.createElement('div');
+	$ball.className = 'ball';
+	$ball.textContent = bonus;
+	$bonus.appendChild($ball);
+}, 7000);
