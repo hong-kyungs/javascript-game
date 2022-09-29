@@ -33,47 +33,44 @@ const bonus = shuffle[6];
 console.log(winBall, bonus);
 
 const $result = document.querySelector('#result');
-setTimeout(() => {
+const $bonus = document.querySelector('#bonus');
+
+//refactoring(리팩토링) 하는 법
+//중복된 것들은 함수로 뺴면서, 중복된 부분을 매개변수로 만든다.
+const showBall = (number, $target) => {
 	const $ball = document.createElement('div');
 	$ball.className = 'ball';
-	$ball.textContent = winBall[0];
-	$result.appendChild($ball);
+	$ball.textContent = number;
+	$target.appendChild($ball);
+};
+
+//[0, 1, 2, 3, 4, 5] -> [1000,2000,3000,4000,5000,6000]
+for (let i = 0; i < 6; i++) {
+	setTimeout(() => {
+		showBall(winBall[i], $result);
+	}, (i + 1) * 1000);
+}
+/*
+setTimeout(() => {
+	showBall(winBall[0], $result);
 }, 1000);
 setTimeout(() => {
-	const $ball = document.createElement('div');
-	$ball.className = 'ball';
-	$ball.textContent = winBall[1];
-	$result.appendChild($ball);
+	showBall(winBall[1], $result);
 }, 2000);
 setTimeout(() => {
-	const $ball = document.createElement('div');
-	$ball.className = 'ball';
-	$ball.textContent = winBall[2];
-	$result.appendChild($ball);
+	showBall(winBall[2], $result);
 }, 3000);
 setTimeout(() => {
-	const $ball = document.createElement('div');
-	$ball.className = 'ball';
-	$ball.textContent = winBall[3];
-	$result.appendChild($ball);
+	showBall(winBall[3], $result);
 }, 4000);
 setTimeout(() => {
-	const $ball = document.createElement('div');
-	$ball.className = 'ball';
-	$ball.textContent = winBall[4];
-	$result.appendChild($ball);
+	showBall(winBall[4], $result);
 }, 5000);
 setTimeout(() => {
-	const $ball = document.createElement('div');
-	$ball.className = 'ball';
-	$ball.textContent = winBall[5];
-	$result.appendChild($ball);
+	showBall(winBall[5], $result);
 }, 6000);
+*/
 
-const $bonus = document.querySelector('#bonus');
 setTimeout(() => {
-	const $ball = document.createElement('div');
-	$ball.className = 'ball';
-	$ball.textContent = bonus;
-	$bonus.appendChild($ball);
+	showBall(bonus, $bonus);
 }, 7000);
