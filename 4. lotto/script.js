@@ -35,19 +35,37 @@ console.log(winBall, bonus);
 const $result = document.querySelector('#result');
 const $bonus = document.querySelector('#bonus');
 
+function colorize(number, $tag) {
+	if (number < 10) {
+		$tag.style.backgroundColor = 'red';
+		$tag.style.color = 'white';
+	} else if (number < 20) {
+		$tag.style.backgroundColor = 'orange';
+	} else if (number < 30) {
+		$tag.style.backgroundColor = 'yellow';
+	} else if (number < 40) {
+		$tag.style.backgroundColor = 'blue';
+		$tag.style.color = 'white';
+	} else {
+		$tag.style.backgroundColor = 'green';
+		$tag.style.color = 'white';
+	}
+}
+
 //refactoring(리팩토링) 하는 법
 //중복된 것들은 함수로 뺴면서, 중복된 부분을 매개변수로 만든다.
-const showBall = (number, $target) => {
+const drawBall = (number, $parent) => {
 	const $ball = document.createElement('div');
 	$ball.className = 'ball';
 	$ball.textContent = number;
-	$target.appendChild($ball);
+	colorize(number, $ball);
+	$parent.appendChild($ball);
 };
 
 //[0, 1, 2, 3, 4, 5] -> [1000,2000,3000,4000,5000,6000]
-for (let i = 0; i < 6; i++) {
+for (let i = 0; i < winBall.length; i++) {
 	setTimeout(() => {
-		showBall(winBall[i], $result);
+		drawBall(winBall[i], $result);
 	}, (i + 1) * 1000);
 }
 /*
@@ -72,5 +90,5 @@ setTimeout(() => {
 */
 
 setTimeout(() => {
-	showBall(bonus, $bonus);
+	drawBall(bonus, $bonus);
 }, 7000);
