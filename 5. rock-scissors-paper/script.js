@@ -31,4 +31,21 @@ const changeComputerHand = () => {
 	$computer.style.background = `url(${IMG_URL}) ${rspX[computerChoice]} 0`;
 	$computer.style.backgroundSize = 'auto 200px';
 };
-setInterval(changeComputerHand, 50);
+let intervalID = setInterval(changeComputerHand, 5000);
+
+//버그예제
+//ex) clickbutton 5번 클릭하면(호출), 인터벌 1번, 2번, 3번, 4번, 5번(마지막인 5번만 intervalID에 저장)
+//그 다음에 버튼을 클릭하면 clearInterval로 5번만 취소되고,
+//1~4번은 실행되게 된다. 그래서 클릭할수록 그림이 더 빠르게 돌아간다.
+const clickButton = () => {
+	clearInterval(intervalID);
+	//점수 계산 및 화면 표시
+	setTimeout(() => {
+		clearInterval(intervalID);
+		intervalID = setInterval(changeComputerHand, 5000);
+	}, 1000);
+};
+
+$rock.addEventListener('click', clickButton);
+$scissors.addEventListener('click', clickButton);
+$paper.addEventListener('click', clickButton);
