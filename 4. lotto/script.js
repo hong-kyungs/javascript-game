@@ -68,6 +68,7 @@ for (let i = 0; i < winBall.length; i++) {
 		drawBall(winBall[i], $result);
 	}, (i + 1) * 1000);
 }
+
 /*
 setTimeout(() => {
 	showBall(winBall[0], $result);
