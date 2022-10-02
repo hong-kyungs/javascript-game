@@ -31,7 +31,7 @@ const changeComputerHand = () => {
 	$computer.style.background = `url(${IMG_URL}) ${rspX[computerChoice]} 0`;
 	$computer.style.backgroundSize = 'auto 200px';
 };
-let intervalID = setInterval(changeComputerHand, 5000);
+let intervalID = setInterval(changeComputerHand, 50);
 
 //버그예제
 //ex) clickbutton 5번 클릭하면(호출), 인터벌 1번, 2번, 3번, 4번, 5번(마지막인 5번만 intervalID에 저장)
@@ -42,7 +42,7 @@ const clickButton = () => {
 	//점수 계산 및 화면 표시
 	setTimeout(() => {
 		clearInterval(intervalID);
-		intervalID = setInterval(changeComputerHand, 5000);
+		intervalID = setInterval(changeComputerHand, 50);
 	}, 1000);
 };
 

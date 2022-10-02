@@ -85,3 +85,10 @@ function checkInput(input) {
 <img src="image/baseball.gif" width="150" height="200"/>
 
 ---
+
+## 4. LOTTO
+
+> 타이머를 사용하여 로또추첨기 만들기  
+> 랜덤으로 숫자를 골라서 6개의 당첨숫자와 1개의 보너스 숫자를 보여주기
+
+<img src="image/lotto.gif" width="250" height="80"/>
