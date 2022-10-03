@@ -92,3 +92,22 @@ function checkInput(input) {
 > 랜덤으로 숫자를 골라서 6개의 당첨숫자와 1개의 보너스 숫자를 보여주기
 
 <img src="image/lotto.gif" width="250" height="80"/>
+
+- 45개의 공이 랜덤하게 섞여서 배열되도록 하고, 하나씩 가져오는 방식 => Fisher-Yates Shuffle 방식
+
+```js
+  const shuffle = []; //45개의 공이 랜덤하게 섞여서 배열되도록 한다.
+  while (candidate.length > 0) {
+	const random = Math.floor(Math.random() * candidate.length); //무작위 인덱스 뽑기
+	const spliceArray = candidate.splice(random, 1); //뽑은 값은 배열에 들어 있음
+	const value = spliceArray[0]; //splice로 반환된 배열에 들어있는 값을 꺼내어
+	shuff
+```
+
+- 나열된 45개의 공에서 6개의 당첨숫자와 1개의 보너스 숫자 뽑기
+  - sort를 이용 오름차순으로 정렬하기
+
+```js
+const winBall = shuffle.slice(0, 6).sort((a, b) => a - b)
+const bonus = shuffle[6]
+```
