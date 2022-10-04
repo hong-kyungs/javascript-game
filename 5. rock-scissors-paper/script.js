@@ -37,13 +37,52 @@ let intervalID = setInterval(changeComputerHand, 50);
 //ex) clickbutton 5번 클릭하면(호출), 인터벌 1번, 2번, 3번, 4번, 5번(마지막인 5번만 intervalID에 저장)
 //그 다음에 버튼을 클릭하면 clearInterval로 5번만 취소되고,
 //1~4번은 실행되게 된다. 그래서 클릭할수록 그림이 더 빠르게 돌아간다.
+let clickable = true;
 const clickButton = () => {
-	clearInterval(intervalID);
-	//점수 계산 및 화면 표시
-	setTimeout(() => {
+	//clickable이라는 변수를 만들어 버튼을 클릭하는 동안에는 false로 만든다.
+	//이때 if문의 조건식이 false가 되므로 버튼을 클릭해도 코드가 실행되지 않는다.
+	//1초 뒤에 타이머를 재개할 때 clickable을 true로 만들어 다시 if문 내부가 실행될 수 있게 한다.
+	if (clickable) {
 		clearInterval(intervalID);
-		intervalID = setInterval(changeComputerHand, 50);
-	}, 1000);
+		clickable = false;
+		const myChoice =
+			event.target.textContent === '바위'
+				? 'rock'
+				: event.target.textContent === '가위'
+				? 'scissors'
+				: 'paper';
+		if (myChoice === 'rock') {
+			if (computerChoice === 'rock') {
+				console.log('무승부');
+			} else if (computerChoice === 'scissors') {
+				console.log('승리');
+			} else if (computerChoice === 'paper') {
+				console.log('패배');
+			}
+		} else if (myChoice === 'scissors') {
+			if (computerChoice === 'scissors') {
+				console.log('무승부');
+			} else if (computerChoice === 'paper') {
+				console.log('승리');
+			} else if (computerChoice === 'rock') {
+				console.log('패배');
+			}
+		} else if (myChoice === 'paper') {
+			if (computerChoice === 'paper') {
+				console.log('무승부');
+			} else if (computerChoice === 'rock') {
+				console.log('승리');
+			} else if (computerChoice === 'scissors') {
+				console.log('패배');
+			}
+		}
+		//점수 계산 및 화면 표시
+		setTimeout(() => {
+			clickable = true;
+			clearInterval(intervalID);
+			intervalID = setInterval(changeComputerHand, 50);
+		}, 1000);
+	}
 };
 
 $rock.addEventListener('click', clickButton);
