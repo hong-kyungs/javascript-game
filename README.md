@@ -111,3 +111,11 @@ function checkInput(input) {
 const winBall = shuffle.slice(0, 6).sort((a, b) => a - b)
 const bonus = shuffle[6]
 ```
+
+---
+
+## 4. 가위바위보
+
+> 컴퓨터의 가위바위보 손이 빠르게 돌아가게 하고, 버튼을 눌러 내 가위바위보를 내면 멈춰서 누가 이겼는지 확인.
+
+<img src="image/rsp.gif" width="150" height="150"/>
