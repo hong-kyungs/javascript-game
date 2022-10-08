@@ -119,3 +119,31 @@ const bonus = shuffle[6]
 > 컴퓨터의 가위바위보 손이 빠르게 돌아가게 하고, 버튼을 눌러 내 가위바위보를 내면 멈춰서 누가 이겼는지 확인.
 
 <img src="image/rsp.gif" width="150" height="150"/>
+
+- 가위바위보 규칙찾기  
+  가위: 1, 바위: 0, 보: -1로 생각하고 내가 낸 것과 컴퓨터가 낸 두값의 차이로 공통규칙 찾아내기
+
+```js
+const myScore = scoreTable[myChoice]
+const computerScore = scoreTable[computerChoice]
+const diff = myScore - computerScore
+```
+
+| 나\컴퓨터 | 가위 | 바위 | 보  |
+| --------- | ---- | ---- | --- |
+| 가위      | 0    | 1    | 2   |
+| 바위      | -1   | 0    | 1   |
+| 보        | -2   | -1   | 0   |
+
+```js
+let message
+if (diff === -1 || diff === 2) {
+  myTotal += 1
+  message = '승리'
+} else if (diff === 1 || diff === -2) {
+  computerTotal += 1
+  message = '패배'
+} else {
+  message = '무승부'
+}
+```

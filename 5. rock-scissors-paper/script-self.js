@@ -80,9 +80,9 @@ const clickButton = () => {
 			message = '무승부';
 		}
 
-		if (myTotal === 3) {
+		if (myTotal >= 3) {
 			$score.textContent = `You Win!!, 컴퓨터  ${computerTotal} :  나 ${myTotal}`;
-		} else if (computerTotal === 3) {
+		} else if (computerTotal >= 3) {
 			$score.textContent = `You Lose!!, 컴퓨터  ${computerTotal} :  나 ${myTotal}`;
 		} else {
 			$score.textContent = `${message}, 컴퓨터  ${computerTotal} : 나 ${myTotal}`;
