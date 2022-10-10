@@ -66,18 +66,20 @@ const callback = (event) => {
 		//승부 확인
 		if (checkWinner(event.target)) {
 			$result.textContent = `${turn}님이 승리!`;
+			$table.removeEventListener('click', callback);
 			return;
 		}
 		// 무승부 검사
-		let count = 0;
+		let draw = true;
 		rows.forEach((row) => {
 			row.forEach((cell) => {
-				if (cell.textContent) {
-					count += 1;
+				if (!cell.textContent) {
+					//한칸이라도 비어있으면 무승부가 아닌걸로 간주 = 9칸이 꽉차있으면 무승부
+					draw = false;
 				}
 			});
 		});
-		if (count === 9) {
+		if (draw) {
 			$result.textContent = '무승부';
 			return;
 		}
