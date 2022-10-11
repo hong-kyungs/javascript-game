@@ -10,23 +10,9 @@ const rows = [];
 //]
 
 const checkWinner = (target) => {
-	let rowIndex = target.parentNode.rowIndex; // td의 부모태그인 tr을 가져오고, 몇번째인지 확인
-	let cellIndex = target.cellIndex; // td는 자체적으로 cellIndex를 가지고 있어, 몇번째인지 확인이 가능
-	/* 아래코드는 위의 두줄로 줄여줌. 
-	let rowIndex;
-	let cellIndex;
-	rows.forEach((row, ri) => {
-		row.forEach((cell, ci) => {
-			if (cell === target) {
-				rowIndex = ri;
-				cellIndex = ci;
-			}
-		});
-	});
-	*/
-	//세 칸 다 채워졌나?
-	let hasWinner = false; // 검사할때는 항상 false로 시작하면 된다, 승자가 있으면 true로 바꿔준다
-	//가로줄검사
+	let rowIndex = target.parentNode.rowIndex;
+	let cellIndex = target.cellIndex;
+	let hasWinner = false;
 	if (
 		rows[rowIndex][0].textContent === turn &&
 		rows[rowIndex][1].textContent === turn &&
@@ -60,47 +46,48 @@ const checkWinner = (target) => {
 	return hasWinner;
 };
 
+const checkWinnerAndDraw = (target) => {
+	const hasWinner = checkWinner(target);
+	if (hasWinner) {
+		$result.textContent = `${turn}님이 승리!`;
+		$table.removeEventListener('click', callback);
+		return;
+	}
+	// 무승부 검사
+	const draw = rows.flat().every((cell) => cell.textContent);
+	if (draw) {
+		$result.textContent = '무승부';
+		return;
+	}
+	turn = turn === 'O' ? 'X' : 'O';
+};
+
+let clickable = true; // flag변수, 중간에 클릭방지, setTimeout사용시 필요
 const callback = (event) => {
+	if (!clickable) return;
 	//칸에 글자가 있나?
 	if (event.target.textContent !== '') {
 		console.log('빈칸이 아닙니다.');
-	} else {
-		console.log('빈칸입니다.');
-		event.target.textContent = turn;
-		//승부 확인
-		const hasWinner = checkWinner(event.target);
-		if (hasWinner) {
-			$result.textContent = `${turn}님이 승리!`;
-			$table.removeEventListener('click', callback);
-			return;
-		}
-		// 무승부 검사
-		//flat() 일차원 배열로 만들고, every로 모든 조건 함수가 true면 true, 하나라도 false면 false
-		const draw = rows.flat().every((cell) => cell.textContent);
-		/*
-		아래코드는 위의 한줄로 줄임.
-		let draw = true;
-		rows.forEach((row) => {
-			row.forEach((cell) => {
-				if (!cell.textContent) {
-					//한칸이라도 비어있으면 무승부가 아닌걸로 간주 = 9칸이 꽉차있으면 무승부
-					draw = false;
-				}
-			});
-		});
-		*/
-		if (draw) {
-			$result.textContent = '무승부';
-			return;
-		}
-		turn = turn === 'O' ? 'X' : 'O';
-		// if (turn === 'O') {
-		// 	turn = 'X';
-		// } else if (turn === 'X') {
-		// 	turn = 'O';
-		// }
+		return;
+	}
+	console.log('빈칸입니다.');
+	event.target.textContent = turn;
+	//승부 확인
+	checkWinnerAndDraw(event.target);
+	if (turn === 'X') {
+		clickable = false;
+		setTimeout(() => {
+			const emptyCells = rows.flat().filter((value) => !value.textContent);
+			const randomCells =
+				emptyCells[Math.floor(Math.random() * emptyCells.length)];
+			randomCells.textContent = 'X';
+			//승부 확인
+			checkWinnerAndDraw(randomCells);
+			clickable = true;
+		}, 1000);
 	}
 };
+
 for (let i = 0; i < 3; i++) {
 	const $tr = document.createElement('tr');
 	const cells = [];
