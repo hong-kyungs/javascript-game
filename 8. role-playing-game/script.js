@@ -74,6 +74,7 @@ $gameMenu.addEventListener('submit', (event) => {
 	}
 });
 
+// 전투모드
 $battleMenu.addEventListener('submit', (event) => {
 	event.preventDefault();
 	const input = event.target['battle-input'].value;
