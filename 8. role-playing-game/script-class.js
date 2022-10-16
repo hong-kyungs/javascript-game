@@ -33,7 +33,6 @@ class Game {
 		this.hero = new Hero(this, name);
 		this.updateHeroStat();
 	}
-	//게임을 종료하는 quit 메서드
 
 	//화면은 전환하는 changeScreen 메서드
 	changeScreen(screen) {
@@ -77,22 +76,34 @@ class Game {
 			//휴식
 		} else if (input === '3') {
 			//종료
+			this.quit();
 		}
 	};
 
 	//전투를 담당하는 onBattleMenuInput 메서드
 	onBattleMenuInput = (event) => {
 		event.preventDefault();
-		const input = event.target['menu-input'].value;
+		const input = event.target['battle-input'].value;
 		if (input === '1') {
 			//공격
 			this.changeScreen('battle');
 			const { hero, monster } = this;
 			hero.attack(monster);
 			monster.attack(hero);
-			this.showMessage(
-				'${hero.att}의 데미지를 주고, ${monster.arr}의 데미지를 받았다.'
-			);
+			if (hero.hp <= 0) {
+				this.showMessage(`${hero.lev}레벨에서 전사. 새 주인공을 생성하세요.`);
+				this.quit();
+			} else if (monster.hp <= 0) {
+				this.showMessage(`몬스터를 잡아 ${monster.xp}경험치를 얻었다`);
+				hero.getXp(monster.xp);
+				this.monster = null;
+				this.changeScreen('game');
+			} else {
+				// 전투 진행 중
+				this.showMessage(
+					`${hero.att}의 데미지를 주고, ${monster.att}의 데미지를 받았다.`
+				);
+			}
 			this.updateHeroStat();
 			this.updateMonsterStat();
 		} else if (input === '2') {
@@ -139,6 +150,18 @@ class Game {
 	showMessage(text) {
 		$message.textContent = text;
 	}
+
+	//게임을 종료하는 quit 메서드 - 모든 것을 초기화
+	quit() {
+		this.hero = null;
+		this.monster = null;
+		this.updateHeroStat();
+		this.updateMonsterStat();
+		$gameMenu.removeEventListener('submit', this.onGameMenuInput);
+		$battleMenu.removeEventListener('submit', this.onBattleMenuInput);
+		this.changeScreen('start');
+		game = null;
+	}
 }
 
 class Hero {
@@ -157,6 +180,18 @@ class Hero {
 	heal(monster) {
 		this.hp += 20;
 		this.hp -= monster.att;
+	}
+	getXp(xp) {
+		this.xp += xp;
+		if (this.xp >= this.lev * 15) {
+			// 경험치를 다 채우면
+			this.xp -= this.lev * 15;
+			this.lev += 1; // 레벨업하면
+			this.maxHp += 5; // 최대체력이 5증가하고,
+			this.att += 5; // 공격력이 5증가하고
+			this.hp = this.maxHp; // 체력을 회복한다
+			this.game.showMessage(`레벨업! 레벨 ${this.lev}`);
+		}
 	}
 }
 
