@@ -164,18 +164,30 @@ class Game {
 	}
 }
 
-class Hero {
-	constructor(game, name) {
+class Unit {
+	constructor(game, name, hp, att, xp) {
 		this.game = game;
 		this.name = name;
-		this.lev = 1;
-		this.maxHp = 100;
-		this.hp = 100;
-		this.xp = 0;
-		this.att = 10;
+		this.maxHp = hp;
+		this.hp = hp;
+		this.xp = xp;
+		this.att = att;
 	}
 	attack(target) {
 		target.hp -= this.att;
+	}
+}
+
+class Hero extends Unit {
+	constructor(game, name) {
+		super(game, name, 100, 10, 0); //부모 클래스의 생성자 호출
+		this.lev = 1; // 그 외 속성
+	}
+	//만약 attack 부분이 부모클래스와 똑같다면 생략가능
+	attack(target) {
+		super.attack(target); //부모 클래스의 attack
+		//부모 클래스 attack 외의 동작
+		console.log('영웅이 공격');
 	}
 	heal(monster) {
 		this.hp += 20;
@@ -195,17 +207,13 @@ class Hero {
 	}
 }
 
-class Monster {
+class Monster extends Unit {
 	constructor(game, name, hp, att, xp) {
-		this.game = game;
-		this.name = name;
-		this.maxHp = hp;
-		this.hp = hp;
-		this.xp = xp;
-		this.att = att;
+		super(game, name, hp, att, xp);
 	}
 	attack(target) {
-		target.hp -= this.att;
+		super.attack(target);
+		console.log('몬스터가 공격');
 	}
 }
 
