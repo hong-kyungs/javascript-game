@@ -74,8 +74,12 @@ class Game {
 			this.showMessage(`몬스터와 마주쳤다. ${this.monster.name}인 것 같다.`);
 		} else if (input === '2') {
 			//휴식
+			this.hero.hp = this.hero.maxHp;
+			this.updateHeroStat();
+			this.showMessage('충분한 휴식을 취했습니다.');
 		} else if (input === '3') {
 			//종료
+			this.showMessage('');
 			this.quit();
 		}
 	};
@@ -107,10 +111,17 @@ class Game {
 			this.updateHeroStat();
 			this.updateMonsterStat();
 		} else if (input === '2') {
-			//회복
+			//회복 - 전투 중에 체력을 20 회복, 단, 회복 후 몬스터에게 한번 공격당함
+			const { hero, monster } = this;
+			hero.heal(monster);
+			this.showMessage('체력을 조금 회복했다!');
+			this.updateHeroStat();
 		} else if (input === '3') {
-			//도망
+			//도망 - 일반 메뉴로 되돌아가기
 			this.changeScreen('game');
+			this.showMessage('부리나케 도망쳤다!');
+			this.monster = null;
+			this.updateMonsterStat();
 		}
 	};
 
@@ -190,7 +201,7 @@ class Hero extends Unit {
 		console.log('영웅이 공격');
 	}
 	heal(monster) {
-		this.hp += 20;
+		this.hp = Math.min(this.maxHp, this.hp + 20);
 		this.hp -= monster.att;
 	}
 	getXp(xp) {
