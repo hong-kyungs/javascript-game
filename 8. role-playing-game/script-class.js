@@ -140,7 +140,7 @@ class Game {
 		$heroLevel.textContent = `${hero.lev}Lev`;
 		$heroHp.textContent = `HP: ${hero.hp}/${hero.maxHp}`;
 		$heroXp.textContent = `XP: ${hero.xp}/${15 * hero.lev}`;
-		$heroatt.textContent = `ATT: ${hero.att}`;
+		$heroAtt.textContent = `ATT: ${hero.att}`;
 	}
 
 	//몬스터의 상태변화

@@ -22,6 +22,7 @@ const hero = {
 	xp: 0,
 	att: 10,
 	attack(monster) {
+		//attack : function(monster) {} 를 위처럼 생략가능
 		monster.hp -= this.att;
 		this.hp -= monster.att;
 	},
@@ -49,7 +50,7 @@ $startScreen.addEventListener('submit', (event) => {
 	$heroLevel.textContent = `${hero.lev}Lev`;
 	$heroHp.textContent = `HP: ${hero.hp}/${hero.maxHp}`;
 	$heroXp.textContent = `XP: ${hero.xp}/${15 * hero.lev}`;
-	$heroatt.textContent = `ATT: ${hero.att}`;
+	$heroAtt.textContent = `ATT: ${hero.att}`;
 	hero.name = name;
 });
 
