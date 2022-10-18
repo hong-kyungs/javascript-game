@@ -191,7 +191,7 @@ class Unit {
 
 class Hero extends Unit {
 	constructor(game, name) {
-		super(game, name, 100, 10, 0); //부모 클래스의 생성자 호출
+		super(game, name, 100, 10, 0); //super는 부모 클래스의 생성자 호출
 		this.lev = 1; // 그 외 속성
 	}
 	//만약 attack 부분이 부모클래스와 똑같다면 생략가능
