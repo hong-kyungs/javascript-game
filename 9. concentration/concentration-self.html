@@ -5,9 +5,13 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script defer src="script.js"></script>
-  <title>짝맞추기</title>
+  <script defer src="script-self.js"></script>
+  <title>짝맞추기-셀프</title>
   <style>
+    #cardNumber {
+      margin-bottom: 20px;
+    }
+
     .card {
       display: inline-block;
       margin-right: 20px;
@@ -52,6 +56,11 @@
 </head>
 
 <body>
+  <form id="cardNumber">
+    <div>카트 개수를 짝수로 입력하세요.(최대 20)</div>
+    <input id="total">
+    <button>입력</button>
+  </form>
   <div id="wrapper"></div>
 </body>
 
