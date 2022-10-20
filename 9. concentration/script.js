@@ -13,6 +13,7 @@ let colorCopy = colors.concat(colors);
 let shuffled = [];
 let clicked = [];
 let completed = [];
+let clickable = false;
 
 function shuffle() {
 	for (let i = 0; colorCopy.length > 0; i += 1) {
@@ -42,6 +43,12 @@ function createCard(i) {
 }
 
 function onClickCard() {
+	//1. 처음에 카드가 공개되는 동안 클릭막기.
+	//2. 12장의 카드가 다 맞으면 클릭막기
+	//3. 방금 클릭한 카드 재클릭 막기
+	if (!clickable || completed.includes(this) || clicked[0] === this) {
+		return;
+	}
 	this.classList.toggle('flipped');
 	clicked.push(this);
 	//if문의 중첩을 방지하지 위해서 return을 빨리한다.
@@ -65,18 +72,22 @@ function onClickCard() {
 		}
 		setTimeout(() => {
 			alert('축하합니다!!');
+			resetGame();
 		}, 1000);
 		return;
 	}
+	clickable = false; // 카드가 2개 선택되면  클릭을 방지 -> 버그 해결 방법 (clicked에 2개이상 들어가지 않게 해서 버그해결)
 	//두 카드가 다르면
 	setTimeout(() => {
 		clicked[0].classList.remove('flipped');
 		clicked[1].classList.remove('flipped');
 		clicked = [];
+		clickable = true;
 	}, 500);
 }
 
 function startGame() {
+	clickable = false;
 	shuffle();
 	for (let i = 0; i < total; i += 1) {
 		const card = createCard(i);
@@ -85,16 +96,28 @@ function startGame() {
 	}
 
 	document.querySelectorAll('.card').forEach((card, index) => {
+		//초반 카드 공개
 		setTimeout(() => {
 			card.classList.add('flipped');
 		}, 1000 + 100 * index);
 	});
 
-	document.querySelectorAll('.card').forEach((card, index) => {
-		setTimeout(() => {
+	setTimeout(() => {
+		// 카드 감추기
+		document.querySelectorAll('.card').forEach((card) => {
 			card.classList.remove('flipped');
-		}, 5000);
-	});
+		});
+		clickable = true;
+	}, 5000);
 }
 
 startGame();
+
+function resetGame() {
+	$wrapper.innerHTML = '';
+	colorCopy = colors.concat(colors);
+	shuffled = [];
+	completed = [];
+	clickable = false;
+	startGame();
+}
