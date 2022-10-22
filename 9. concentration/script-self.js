@@ -132,7 +132,7 @@ function resetGame() {
 	$wrapper.innerHTML = '';
 	total = '';
 	$input.value = '';
-	colorCopy = colors.concat(colors);
+	// colorCopy = colors.concat(colors);
 	shuffled = [];
 	completed = [];
 	clickable = false;
