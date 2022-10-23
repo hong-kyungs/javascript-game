@@ -155,10 +155,54 @@ if (diff === -1 || diff === 2) {
 
 - 반응 속도 측정하기
 
-<img src="image/response.gif" width="150" height="150"/>
+<img src="image/response.gif" width="150" height="120"/>
 
 ```js
 new Date()
 ```
 
 new Date()를 사용하여 시작 시각과 종료 시각을 측정해서 서로 뺀다.
+
+- 평균 반응 속도 구하기
+
+<img src="image/response2.gif" width="150" height="150"/>
+
+```js
+const records = [];
+...
+const average = records.reduce((a, c) => a + c) / records.length;
+```
+
+_records_ 라는 배열을 만들어 반응속도를 기록하고, _reduce_ 라는 배열의 메서드를 사용해서 평균값 구하기
+
+- 성급한 클릭 막기
+
+<img src="image/response3.gif" width="150" height="150"/>
+
+```js
+clearTimeout(timeoutId)
+```
+
+준비 화면(빨강)일 때 클릭한다면 성급했다는 메시지가 나오고 다시 클릭하도록 대기 화면(파랑)으로 보냄.
+
+clearTimeout을 사용하여 타이머가 필요없을때는 없애줌
+
+## 6. tic-tac-toe 게임
+
+> 오목의 축소판인 삼목게임으로, 바둑판이 아니라 3 × 3 표 위에서 진행 (이차원 배열로 표현).
+> 바둑에 검은 돌과 흰 돌이 있듯이 틱택토에는 O와 X가 있다.
+
+<img src="image/tictactoe.gif" width="150" height="150"/>
+
+- 이차원배열
+- rowIndex와 cellIndex 사용하여 몇번째 줄, 칸인지 확인
+- 무승부검사 - flat, every  
+  flat() 일차원 배열로 만들고, every로 모든 조건 함수가 true면 true, 하나라도 false면 false
+
+```js
+const draw = rows.flat().every((cell) => cell.textContent)
+if (draw) {
+  $result.textContent = '무승부'
+  return
+}
+```
