@@ -9,8 +9,10 @@ const colors = [
 	'lightskyblue',
 	'lightgreen',
 ];
-const colorCopy = colors.concat(colors);
+let colorCopy = colors.concat(colors);
 let shuffled = [];
+let clicked = [];
+let completed = [];
 
 function shuffle() {
 	for (let i = 0; colorCopy.length > 0; i += 1) {
@@ -36,10 +38,45 @@ function createCard() {
 	return card;
 }
 
+function onClickCard() {
+	this.classList.toggle('flipped');
+	clicked.push(this);
+	if (clicked.length !== 2) {
+		return;
+	}
+	//선택한 카드가 2장이고
+	//2장의 카드가 같으면
+	const firstBackColor =
+		clicked[0].querySelector('.card-back').style.backgroundColor;
+	const secondBackColor =
+		clicked[1].querySelector('.card-back').style.backgroundColor;
+	if (firstBackColor === secondBackColor) {
+		completed.push(clicked[0]);
+		completed.push(clicked[1]);
+		clicked = [];
+		if (completed.length !== total) {
+			return;
+		}
+		setTimeout(() => {
+			alert('축하합니다.');
+			resetGame();
+			return;
+		}, 1000);
+	}
+
+	//2장의 카드가 다르면
+	setTimeout(() => {
+		clicked[0].classList.remove('flipped');
+		clicked[1].classList.remove('flipped');
+		clicked = [];
+	}, 500);
+}
+
 function startGame() {
 	shuffle();
 	for (i = 0; i < total; i++) {
 		const card = createCard(i);
+		card.addEventListener('click', onClickCard);
 		$wrapper.appendChild(card);
 	}
 
@@ -57,3 +94,11 @@ function startGame() {
 }
 
 startGame();
+
+function resetGame() {
+	$wrapper.innerHTML = '';
+	colorCopy = colors.concat(colors);
+	shuffled = [];
+	completed = [];
+	startGame();
+}
