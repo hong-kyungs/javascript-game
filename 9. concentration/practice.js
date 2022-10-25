@@ -13,6 +13,8 @@ let colorCopy = colors.concat(colors);
 let shuffled = [];
 let clicked = [];
 let completed = [];
+//버그를 해결하기 위해 카드를 클릭할 수 있는 상황과 클릭할 수 없는 상황을 구분 => clickable 변수 선언
+let clickable = false;
 
 function shuffle() {
 	for (let i = 0; colorCopy.length > 0; i += 1) {
@@ -39,6 +41,9 @@ function createCard() {
 }
 
 function onClickCard() {
+	if (!clickable || completed.includes(this) || clicked[0] === this) {
+		return;
+	}
 	this.classList.toggle('flipped');
 	clicked.push(this);
 	if (clicked.length !== 2) {
@@ -65,14 +70,17 @@ function onClickCard() {
 	}
 
 	//2장의 카드가 다르면
+	clickable = false;
 	setTimeout(() => {
 		clicked[0].classList.remove('flipped');
 		clicked[1].classList.remove('flipped');
 		clicked = [];
+		clickable = true;
 	}, 500);
 }
 
 function startGame() {
+	clickable = false;
 	shuffle();
 	for (i = 0; i < total; i++) {
 		const card = createCard(i);
@@ -90,6 +98,7 @@ function startGame() {
 		document.querySelectorAll('.card').forEach((card) => {
 			card.classList.remove('flipped');
 		});
+		clickable = true;
 	}, 5000);
 }
 

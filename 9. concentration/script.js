@@ -13,6 +13,7 @@ let colorCopy = colors.concat(colors);
 let shuffled = [];
 let clicked = [];
 let completed = [];
+//버그를 해결하기 위해 카드를 클릭할 수 있는 상황과 클릭할 수 없는 상황을 구분 => clickable 변수 선언
 let clickable = false;
 
 function shuffle() {
