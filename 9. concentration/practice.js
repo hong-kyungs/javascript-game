@@ -1,6 +1,6 @@
 $wrapper = document.querySelector('#wrapper');
 
-const total = 12;
+const total = parseInt(prompt('카드 개수를 짝수로 입력하세요(최대 20)'));
 const colors = [
 	'lightcoral',
 	'lightpink',
@@ -8,13 +8,19 @@ const colors = [
 	'plum',
 	'lightskyblue',
 	'lightgreen',
+	'orange',
+	'yellow',
+	'gray',
+	'violet',
 ];
-let colorCopy = colors.concat(colors);
+let colorSlice = colors.slice(0, total / 2);
+let colorCopy = colorSlice.concat(colorSlice);
 let shuffled = [];
 let clicked = [];
 let completed = [];
 //버그를 해결하기 위해 카드를 클릭할 수 있는 상황과 클릭할 수 없는 상황을 구분 => clickable 변수 선언
 let clickable = false;
+let startTime;
 
 function shuffle() {
 	for (let i = 0; colorCopy.length > 0; i += 1) {
@@ -62,8 +68,9 @@ function onClickCard() {
 		if (completed.length !== total) {
 			return;
 		}
+		const endTime = new Date();
 		setTimeout(() => {
-			alert('축하합니다.');
+			alert(`축하합니다. ${(endTime - startTime) / 1000}초 걸렸습니다.`);
 			resetGame();
 			return;
 		}, 1000);
@@ -99,6 +106,7 @@ function startGame() {
 			card.classList.remove('flipped');
 		});
 		clickable = true;
+		startTime = new Date();
 	}, 5000);
 }
 
@@ -106,7 +114,7 @@ startGame();
 
 function resetGame() {
 	$wrapper.innerHTML = '';
-	colorCopy = colors.concat(colors);
+	colorCopy = colorSlice.concat(colorSlice);
 	shuffled = [];
 	completed = [];
 	startGame();
