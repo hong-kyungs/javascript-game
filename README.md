@@ -148,6 +148,8 @@ if (diff === -1 || diff === 2) {
 }
 ```
 
+---
+
 ## 5. 반응 속도 테스트
 
 > 반응속도가 얼마나 빠른지 확인하는 반응속도 테스트 프로그램.  
@@ -206,3 +208,42 @@ if (draw) {
   return
 }
 ```
+
+## 8. concentration game - 카드 맞추기
+
+> 짝 맞추기 게임. 모든 카드의 색을 보여 주며 잠깐 동안 카드 짝을 외울 수 있는 시간을 주고 나서, 카드를 다시 전부 뒤집은 뒤 짝을 맞추게 하는 게임.
+
+<img src="image/concentration.gif" width="250" height="150"/>
+
+1. 카드 개수 입력하기
+   <img src="image/concentration2.png" width="250" height="50"/>
+
+2. 클릭막기  
+   버그를 해결하기 위해 카드를 클릭할 수 있는 상황과 클릭할 수 없는 상황을 구분 => clickable 변수 선언
+
+```js
+let clickable = false;
+
+function onClickCard() {
+	//1. 처음에 카드가 공개되는 동안 클릭막기.
+	//2. 12장의 카드가 다 맞으면 클릭막기
+	//3. 방금 클릭한 카드 재클릭 막기
+	if (!clickable || completed.includes(this) || clicked[0] === this) {
+		return;
+	}
+```
+
+3. 게임 리셋하기 - 카드가 다 맞춰지면 게임 리셋
+
+```js
+function resetGame() {
+  $wrapper.innerHTML = ''
+  colorCopy = colors.concat(colors)
+  shuffled = []
+  completed = []
+  clickable = false
+  startGame()
+}
+```
+
+---
