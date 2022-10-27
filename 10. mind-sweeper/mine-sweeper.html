@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script defer src="script.js"></script>
+  <title>지뢰찾기</title>
+
+  <style>
+    table {
+      border-collapse: collapse;
+    }
+
+    td {
+      border: 1px solid #bbb;
+      text-align: center;
+      line-height: 20px;
+      width: 20px;
+      height: 20px;
+      background: #888;
+    }
+
+    td.opened {
+      background: white;
+    }
+
+    td.flag {
+      background: red;
+    }
+
+    td.question {
+      background: orange;
+    }
+  </style>
+</head>
+
+<body>
+  <table id="table">
+    <tbody>
+    </tbody>
+    <!-- 
+      이렇게 넣어줄 예정
+      <tbody>
+      <tr>
+        <td></td>
+      </tr>
+    </tbody>
+     -->
+  </table>
+  <div id="result"></div>
+</body>
+
+</html>

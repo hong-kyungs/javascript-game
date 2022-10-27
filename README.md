@@ -216,6 +216,7 @@ if (draw) {
 <img src="image/concentration.gif" width="250" height="150"/>
 
 1. 카드 개수 입력하기
+
    <img src="image/concentration2.png" width="250" height="50"/>
 
 2. 클릭막기  
