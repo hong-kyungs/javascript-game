@@ -107,6 +107,21 @@ function countMine(rowIndex, cellIndex) {
 function onLeftClick(event) {
 	const target = event.target; // td
 	const rowIndex = target.parentNode.rowIndex;
+	const cellIndex = target.cellIndex;
+	const cellData = data[rowIndex][cellIndex];
+	if (cellData === CODE.NORMAL) {
+		// 닫힌 칸이면
+		const count = countMine(rowIndex, cellIndex);
+		target.textContent = count || '';
+		target.className = 'opened';
+		data[rowIndex][cellIndex] = count;
+	} else if (cellData === CODE.MINE) {
+		// 지뢰 칸이면
+		target.textContent = '펑';
+		target.className = 'opened';
+		$tbody.removeEventListener('contextmenu', onRightClick);
+		$tbody.removeEventListener('click', onLeftClick);
+	} // 나머지는 무시
 }
 
 function drawTable() {
