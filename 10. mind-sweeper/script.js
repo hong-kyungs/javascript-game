@@ -14,6 +14,7 @@ const CODE = {
 };
 
 let data;
+let openCount = 0;
 function plantMine() {
 	const candidate = Array(row * cell)
 		.fill()
@@ -103,6 +104,47 @@ function countMine(rowIndex, cellIndex) {
 	mines.includes(data[rowIndex + 1]?.[cellIndex + 1]) && i++;
 	return i;
 }
+function open(rowIndex, cellIndex) {
+	//한번 열었으면 다시 열지말고 리턴시키기 -> 반복현상을 막기위해
+	if (data[rowIndex]?.[cellIndex] >= CODE.OPENED) return;
+	const target = $tbody.children[rowIndex]?.children[cellIndex];
+	if (!target) {
+		return;
+	}
+	const count = countMine(rowIndex, cellIndex);
+	target.textContent = count || '';
+	target.className = 'opened';
+	data[rowIndex][cellIndex] = count;
+	openCount++;
+	console.log(openCount);
+	if (openCount === row * cell - mine) {
+		$tbody.removeEventListener('contextmenu', onRightClick);
+		$tbody.removeEventListener('click', onLeftClick);
+		setTimeout(() => {
+			alert(`승리했습니다. 몇초가 걸렸습니다.`);
+		}, 1000);
+	}
+	return count;
+}
+
+//재귀함수 - 나 자신을 다시 호출해준다
+//재귀함수 사용시 - Maximum call stack size exceeded 라는 에러가 발생할 가능성이 높다
+//setTimeout 0 으로 에러 해결 - 콜스택에만 쌓여있는 것들을 백그라운드와 테스트큐로 분산시킴
+function openAround(rI, cI) {
+	setTimeout(() => {
+		const count = open(rI, cI);
+		if (count === 0) {
+			openAround(rI - 1, cI - 1);
+			openAround(rI - 1, cI);
+			openAround(rI - 1, cI + 1);
+			openAround(rI, cI - 1);
+			openAround(rI, cI + 1);
+			openAround(rI + 1, cI - 1);
+			openAround(rI + 1, cI);
+			openAround(rI + 1, cI + 1);
+		}
+	}, 0);
+}
 
 function onLeftClick(event) {
 	const target = event.target; // td
@@ -111,17 +153,14 @@ function onLeftClick(event) {
 	const cellData = data[rowIndex][cellIndex];
 	if (cellData === CODE.NORMAL) {
 		// 닫힌 칸이면
-		const count = countMine(rowIndex, cellIndex);
-		target.textContent = count || '';
-		target.className = 'opened';
-		data[rowIndex][cellIndex] = count;
+		openAround(rowIndex, cellIndex);
 	} else if (cellData === CODE.MINE) {
 		// 지뢰 칸이면
 		target.textContent = '펑';
 		target.className = 'opened';
 		$tbody.removeEventListener('contextmenu', onRightClick);
 		$tbody.removeEventListener('click', onLeftClick);
-	} // 나머지는 무시
+	} // 나머지는 무시, 아무 동작도 안함
 }
 
 function drawTable() {
