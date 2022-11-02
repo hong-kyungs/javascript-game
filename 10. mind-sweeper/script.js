@@ -2,9 +2,9 @@ $form = document.querySelector('#form');
 $timer = document.querySelector('#timer');
 $tbody = document.querySelector('table tbody');
 $result = document.querySelector('#result');
-const row = 10; //줄
-const cell = 10; //칸
-const mine = 10; //지뢰 10개
+let row; //줄
+let cell; //칸
+let mine; //지뢰
 const CODE = {
 	NORMAL: -1,
 	QUESTION: -2,
@@ -16,14 +16,25 @@ const CODE = {
 };
 
 let data;
-let openCount = 0;
-let startTime = new Date();
-const interval = setInterval(() => {
-	const time = Math.floor((new Date() - startTime) / 1000);
-	$timer.textContent = `${time}초`;
-}, 1000);
+let openCount;
+let startTime;
+let interval;
 
-function onSubmit() {}
+function onSubmit(event) {
+	event.preventDefault();
+	row = parseInt(event.target.row.value);
+	cell = parseInt(event.target.cell.value);
+	mine = parseInt(event.target.mine.value);
+	openCount = 0;
+	clearInterval(interval);
+	$tbody.innerHTML = '';
+	drawTable();
+	startTime = new Date();
+	interval = setInterval(() => {
+		const time = Math.floor((new Date() - startTime) / 1000);
+		$timer.textContent = `${time}초`;
+	}, 1000);
+}
 
 $form.addEventListener('submit', onSubmit);
 
@@ -194,5 +205,3 @@ function drawTable() {
 		$tbody.addEventListener('click', onLeftClick);
 	});
 }
-
-drawTable();
