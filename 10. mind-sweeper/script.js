@@ -1,3 +1,5 @@
+$form = document.querySelector('#form');
+$timer = document.querySelector('#timer');
 $tbody = document.querySelector('table tbody');
 $result = document.querySelector('#result');
 const row = 10; //줄
@@ -15,6 +17,16 @@ const CODE = {
 
 let data;
 let openCount = 0;
+let startTime = new Date();
+const interval = setInterval(() => {
+	const time = Math.floor((new Date() - startTime) / 1000);
+	$timer.textContent = `${time}초`;
+}, 1000);
+
+function onSubmit() {}
+
+$form.addEventListener('submit', onSubmit);
+
 function plantMine() {
 	const candidate = Array(row * cell)
 		.fill()
@@ -118,11 +130,13 @@ function open(rowIndex, cellIndex) {
 	openCount++;
 	console.log(openCount);
 	if (openCount === row * cell - mine) {
+		const time = (new Date() - startTime) / 1000;
+		clearInterval(interval);
 		$tbody.removeEventListener('contextmenu', onRightClick);
 		$tbody.removeEventListener('click', onLeftClick);
 		setTimeout(() => {
-			alert(`승리했습니다. 몇초가 걸렸습니다.`);
-		}, 1000);
+			alert(`승리했습니다. ${time}초가 걸렸습니다.`);
+		}, 500);
 	}
 	return count;
 }
@@ -158,6 +172,7 @@ function onLeftClick(event) {
 		// 지뢰 칸이면
 		target.textContent = '펑';
 		target.className = 'opened';
+		clearInterval(interval);
 		$tbody.removeEventListener('contextmenu', onRightClick);
 		$tbody.removeEventListener('click', onLeftClick);
 	} // 나머지는 무시, 아무 동작도 안함
