@@ -172,11 +172,23 @@ function openAround(rI, cI) {
 	}, 0);
 }
 
+let firstClick = true;
+
+function transferMine(rI, cI) {}
+
 function onLeftClick(event) {
 	const target = event.target; // td
 	const rowIndex = target.parentNode.rowIndex;
 	const cellIndex = target.cellIndex;
 	const cellData = data[rowIndex][cellIndex];
+	if (firstClick) {
+		// 첫번째클릭이면
+		firstClick = false;
+		if (cellData === CODE.MINE) {
+			//첫클릭이 지뢰면
+			transferMine(rowIndex, cellIndex); // 지뢰 옮기기
+		}
+	}
 	if (cellData === CODE.NORMAL) {
 		// 닫힌 칸이면
 		openAround(rowIndex, cellIndex);
