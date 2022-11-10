@@ -172,10 +172,13 @@ function openAround(rI, cI) {
 	}, 0);
 }
 
+let normalCellFound = false;
 let firstClick = true;
 function transferMine(rI, cI) {
+	if (normalCellFound) return;
 	if (data[rI]?.[cI] === CODE.NORMAL) {
 		// 빈칸인 경우
+		normalCellFound = true;
 		data[rI][cI] = CODE.MINE;
 	} else {
 		// 지뢰 칸인 경우 8방향 탐색
