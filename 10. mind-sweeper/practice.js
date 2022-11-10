@@ -173,8 +173,22 @@ function openAround(rI, cI) {
 }
 
 let firstClick = true;
-
-function transferMine(rI, cI) {}
+function transferMine(rI, cI) {
+	if (data[rI]?.[cI] === CODE.NORMAL) {
+		// 빈칸인 경우
+		data[rI][cI] = CODE.MINE;
+	} else {
+		// 지뢰 칸인 경우 8방향 탐색
+		transferMine(rI - 1, cI - 1);
+		transferMine(rI - 1, cI);
+		transferMine(rI - 1, cI + 1);
+		transferMine(rI, cI - 1);
+		transferMine(rI, cI + 1);
+		transferMine(rI + 1, cI - 1);
+		transferMine(rI + 1, cI);
+		transferMine(rI + 1, cI + 1);
+	}
+}
 
 function onLeftClick(event) {
 	const target = event.target; // td
@@ -187,6 +201,8 @@ function onLeftClick(event) {
 		if (cellData === CODE.MINE) {
 			//첫클릭이 지뢰면
 			transferMine(rowIndex, cellIndex); // 지뢰 옮기기
+			data[rowIndex][cellIndex] = CODE.NORMAL; // 지금 칸을 빈칸으로
+			cellData = CODE.NORMAL;
 		}
 	}
 	if (cellData === CODE.NORMAL) {
