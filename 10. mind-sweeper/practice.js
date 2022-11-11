@@ -128,6 +128,7 @@ function countMine(rowIndex, cellIndex) {
 	mines.includes(data[rowIndex + 1]?.[cellIndex + 1]) && i++;
 	return i;
 }
+
 function open(rowIndex, cellIndex) {
 	//한번 열었으면 다시 열지말고 리턴시키기 -> 반복현상을 막기위해
 	if (data[rowIndex]?.[cellIndex] >= CODE.OPENED) return;
@@ -175,12 +176,16 @@ function openAround(rI, cI) {
 let normalCellFound = false;
 let firstClick = true;
 function transferMine(rI, cI) {
-	if (normalCellFound) return;
+	if (normalCellFound) return; // 이미 빈칸을 찾았으면 종료 - 계속 빈칸찾는 행위를 차단
+	if (rI < 0 || rI >= row || cI < 0 || cI >= cell) return; // rowIndex와 cellIndex가 범위를 초과하지 않았는지
+	if (searched[rI][cI]) return; // 이미 찾은 칸이면 종료
 	if (data[rI]?.[cI] === CODE.NORMAL) {
 		// 빈칸인 경우
 		normalCellFound = true;
 		data[rI][cI] = CODE.MINE;
 	} else {
+		//searched는 같은 칸수를 가지는 이차원 배열로, 한 번 transferMine으로 검사한 칸은 true로 설정해서 다시 검사하지 않게 한다.
+		searched[rI][cI] = true;
 		// 지뢰 칸인 경우 8방향 탐색
 		transferMine(rI - 1, cI - 1);
 		transferMine(rI - 1, cI);
@@ -197,10 +202,14 @@ function onLeftClick(event) {
 	const target = event.target; // td
 	const rowIndex = target.parentNode.rowIndex;
 	const cellIndex = target.cellIndex;
-	const cellData = data[rowIndex][cellIndex];
+	let cellData = data[rowIndex][cellIndex];
 	if (firstClick) {
 		// 첫번째클릭이면
 		firstClick = false;
+		// 찾았던 칸인지 아닌지 알기 위해서 새로운 배열을 실행할 수 밖에 없다
+		searched = Array(row)
+			.fill()
+			.map(() => []);
 		if (cellData === CODE.MINE) {
 			//첫클릭이 지뢰면
 			transferMine(rowIndex, cellIndex); // 지뢰 옮기기
@@ -213,6 +222,7 @@ function onLeftClick(event) {
 		openAround(rowIndex, cellIndex);
 	} else if (cellData === CODE.MINE) {
 		// 지뢰 칸이면
+
 		target.textContent = '펑';
 		target.className = 'opened';
 		clearInterval(interval);
