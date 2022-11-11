@@ -198,6 +198,17 @@ function transferMine(rI, cI) {
 	}
 }
 
+function showMines() {
+	const mines = [CODE.MINE, CODE.QUESTION_MINE, CODE.FLAG_MINE];
+	data.forEach((row, rowIndex) => {
+		row.forEach((cell, cellIndex) => {
+			if (mines.includes(cell)) {
+				$tbody.children[rowIndex].children[cellIndex].textContent = 'X';
+			}
+		});
+	});
+}
+
 function onLeftClick(event) {
 	const target = event.target; // td
 	const rowIndex = target.parentNode.rowIndex;
@@ -222,7 +233,7 @@ function onLeftClick(event) {
 		openAround(rowIndex, cellIndex);
 	} else if (cellData === CODE.MINE) {
 		// 지뢰 칸이면
-
+		showMines();
 		target.textContent = '펑';
 		target.className = 'opened';
 		clearInterval(interval);
