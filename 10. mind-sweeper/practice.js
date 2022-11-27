@@ -88,7 +88,7 @@ function onRightClick(event) {
 		// 깃발 지뢰면
 		data[rowIndex][cellIndex] = CODE.MINE; // 지뢰로
 		target.className = '';
-		target.textContent = 'X';
+		//target.textContent = 'X';
 	} else if (cellData === CODE.NORMAL) {
 		// 닫힌 칸이면
 		data[rowIndex][cellIndex] = CODE.QUESTION; // 물음표로
@@ -162,11 +162,24 @@ function openAround(rI, cI) {
 	}, 0);
 }
 
+let firstClick = true;
+function transferMine() {}
+
 function onLeftClick(event) {
 	const target = event.target;
 	const rowIndex = target.parentNode.rowIndex;
 	const cellIndex = target.cellIndex;
 	const cellData = data[rowIndex][cellIndex];
+	if (firstClick) {
+		firstClick = false;
+		if (cellData === CODE.MINE) {
+			// 첫 클릭이 지뢰면
+			transferMine(rowIndex, cellIndex); // 지뢰를 옮기고
+			data[rowIndex][cellIndex] = CODE.NORMAL; // 지금 칸을 빈칸으로
+			cellData = CODE.NORMAL;
+		}
+	}
+
 	if (cellData === CODE.NORMAL) {
 		// 닫힌 칸이면
 		//지뢰개수세기, 열기
@@ -189,7 +202,7 @@ function drawTable() {
 		row.forEach((cell) => {
 			const $td = document.createElement('td');
 			if (cell === CODE.MINE) {
-				$td.textContent = 'X';
+				//$td.textContent = 'X';
 			}
 			$tr.append($td);
 		});
