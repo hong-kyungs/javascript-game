@@ -28,6 +28,7 @@ function onSubmit(event) {
 	clearInterval(interval);
 	$tbody.innerHTML = '';
 	drawTable();
+	firstClick = true;
 	startTime = new Date();
 	interval = setInterval(() => {
 		const time = Math.floor((new Date() - startTime) / 1000);
@@ -187,6 +188,17 @@ function transferMine(rI, cI) {
 	}
 }
 
+function showMine() {
+	const mines = [CODE.MINE, CODE.QUESTION_MINE, CODE.FLAG_MINE];
+	data.forEach((row, rowIndex) => {
+		row.forEach((cell, cellIndex) => {
+			if (mines.includes(cell)) {
+				$tbody.children[rowIndex].children[cellIndex].textContent = 'X';
+			}
+		});
+	});
+}
+
 function onLeftClick(event) {
 	const target = event.target;
 	const rowIndex = target.parentNode.rowIndex;
@@ -211,6 +223,7 @@ function onLeftClick(event) {
 		openAround(rowIndex, cellIndex);
 	} else if (cellData === CODE.MINE) {
 		// 지뢰면
+		showMine();
 		target.textContent = '펑';
 		target.className = 'opened';
 		clearInterval(interval);
