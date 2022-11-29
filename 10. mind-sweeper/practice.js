@@ -162,16 +162,41 @@ function openAround(rI, cI) {
 	}, 0);
 }
 
+let normalCellFound = false;
+let searched;
 let firstClick = true;
-function transferMine() {}
+function transferMine(rI, cI) {
+	if (normalCellFound) return; // 이미 빈칸을 찾았으면 종료, 반복을 막기 위해서
+	if (rI < 0 || rI >= row || cI < 0 || cI >= cell) return; // -1이거나 row, cell보다 크면 종료
+	if (searched[rI][cI]) return; //이미 찾은 칸이면 종료
+	if (data[rI]?.[cI] === CODE.NORMAL) {
+		// 빈칸인 경우
+		normalCellFound = true;
+		data[rI][cI] = CODE.MINE; // 지뢰를 심고,
+	} else {
+		// 지뢰칸인 경우 8방향 탐색
+		searched[rI][cI] = true; // 이미 찾은 칸은 true로 만들어서 종료
+		transferMine(rI - 1, cI - 1);
+		transferMine(rI - 1, cI);
+		transferMine(rI - 1, cI + 1);
+		transferMine(rI, cI - 1);
+		transferMine(rI, cI + 1);
+		transferMine(rI + 1, cI - 1);
+		transferMine(rI + 1, cI);
+		transferMine(rI + 1, cI + 1);
+	}
+}
 
 function onLeftClick(event) {
 	const target = event.target;
 	const rowIndex = target.parentNode.rowIndex;
 	const cellIndex = target.cellIndex;
-	const cellData = data[rowIndex][cellIndex];
+	let cellData = data[rowIndex][cellIndex];
 	if (firstClick) {
 		firstClick = false;
+		searched = Array(row)
+			.fill()
+			.map(() => []);
 		if (cellData === CODE.MINE) {
 			// 첫 클릭이 지뢰면
 			transferMine(rowIndex, cellIndex); // 지뢰를 옮기고
@@ -179,7 +204,6 @@ function onLeftClick(event) {
 			cellData = CODE.NORMAL;
 		}
 	}
-
 	if (cellData === CODE.NORMAL) {
 		// 닫힌 칸이면
 		//지뢰개수세기, 열기
