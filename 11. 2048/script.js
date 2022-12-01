@@ -60,3 +60,54 @@ function draw() {
 }
 
 startGame();
+
+/*
+window.addEventListener('keydown', (event) => {
+  console.log('keydown', event);
+});
+window.addEventListener('keyup', (event) => {
+  console.log('keyup', event);
+});
+
+window.addEventListener('mousedown', (event) => {
+  console.log('mousedown', event);
+});
+window.addEventListener('mousemove', (event) => {
+  console.log('mousemove', event);
+});
+window.addEventListener('mouseup', (event) => {
+  console.log('mouseup', event);
+});
+*/
+
+function moveCells(direction) {}
+window.addEventListener('keyup', (event) => {
+	if (event.key === 'ArrowUp') {
+		moveCells('up');
+	} else if (event.key === 'ArrowDown') {
+		moveCells('down');
+	} else if (event.key === 'ArrowLeft') {
+		moveCells('left');
+	} else if (event.key === 'ArrowRight') {
+		moveCells('right');
+	}
+});
+
+let startCoord; // 시작 좌표
+window.addEventListener('mousedown', (event) => {
+	startCoord = [event.clientX, event.clientY];
+});
+window.addEventListener('mouseup', (event) => {
+	const endCoord = [event.clientX, event.clientY]; // 끝 좌표
+	const diffX = endCoord[0] - startCoord[0];
+	const diffY = endCoord[1] - startCoord[1];
+	if (diffX < 0 && Math.abs(diffX) > Math.abs(diffY)) {
+		moveCells('left');
+	} else if (diffX > 0 && Math.abs(diffX) > Math.abs(diffY)) {
+		moveCells('right');
+	} else if (diffY > 0 && Math.abs(diffX) <= Math.abs(diffY)) {
+		moveCells('down');
+	} else if (diffY < 0 && Math.abs(diffX) <= Math.abs(diffY)) {
+		moveCells('up');
+	}
+});
