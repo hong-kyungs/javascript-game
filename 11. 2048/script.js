@@ -85,7 +85,7 @@ window.addEventListener('mouseup', (event) => {
 data = [
 	[0, 2, 4, 2],
 	[0, 0, 8, 0],
-	[2, 2, 4, 8],
+	[8, 4, 2, 2],
 	[0, 16, 0, 4],
 ];
 draw();
@@ -93,8 +93,10 @@ draw();
 function moveCells(direction) {
 	//case문에 {}를 사용한 이유
 	//블록스코프의 활용으로 newData를 블록안에서만 활용하기 위해서
+	//case 내부에서 const나 let을 사용할 때 중괄호{}를 넣는다
+	//const와 let은 블록스코프라서 블록안에서만 접근 가능
 	switch (direction) {
-		case 'left':
+		case 'left': {
 			const newData = [[], [], [], []]; // 바로 이전 data를 기반으로 newData 생성
 			data.forEach((rowData, i) => {
 				// draw할 때 data를 drawg하기 떄문에 바꿔주는 주체는 newData가 아니고 data
@@ -120,8 +122,30 @@ function moveCells(direction) {
 				});
 			});
 			break;
-		case 'right':
+		}
+		case 'right': {
+			const newData = [[], [], [], []];
+			data.forEach((rowData, i) => {
+				rowData.forEach((cellData, j) => {
+					if (rowData[3 - j]) {
+						const currentRow = newData[i];
+						const prevData = currentRow[currentRow.length - 1];
+						if (prevData === rowData[3 - j]) {
+							currentRow[currentRow.length - 1] *= -2;
+						} else {
+							newData[i].push(rowData[3 - j]);
+						}
+					}
+				});
+			});
+			console.log(newData);
+			[1, 2, 3, 4].forEach((rowData, i) => {
+				[1, 2, 3, 4].forEach((cellData, j) => {
+					data[i][3 - j] = Math.abs(newData[i][j]) || 0;
+				});
+			});
 			break;
+		}
 		case 'up':
 			break;
 		case 'down':
