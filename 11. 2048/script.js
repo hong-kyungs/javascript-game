@@ -80,7 +80,47 @@ window.addEventListener('mouseup', (event) => {
 });
 */
 
-function moveCells(direction) {}
+//dummy data를 이용해서 test해보면서 코드를 짜는 것이 좋다.
+//dummy data를 원하는대로 바꾸면서 모든 경우에도 잘 작동하는지 테스트하면 된다.
+data = [
+	[0, 2, 4, 2],
+	[0, 0, 8, 0],
+	[2, 2, 4, 8],
+	[0, 16, 0, 4],
+];
+draw();
+
+function moveCells(direction) {
+	//case문에 {}를 사용한 이유
+	//블록스코프의 활용으로 newData를 블록안에서만 활용하기 위해서
+	switch (direction) {
+		case 'left':
+			const newData = [[], [], [], []]; // 바로 이전 data를 기반으로 newData 생성
+			data.forEach((rowData, i) => {
+				// draw할 때 data를 drawg하기 떄문에 바꿔주는 주체는 newData가 아니고 data
+				rowData.forEach((cellData, j) => {
+					if (cellData) {
+						newData[i].push(cellData); // 데이터를 newData로 옮길 때 0을(빈칸을) 제외한 나머지 값들을 옮겨서 왼쪽 정렬 효과
+					}
+				});
+			});
+			console.log(newData);
+			[1, 2, 3, 4].forEach((rowData, i) => {
+				[1, 2, 3, 4].forEach((cellData, j) => {
+					data[i][j] = newData[i][j] || 0;
+				});
+			});
+			break;
+		case 'right':
+			break;
+		case 'up':
+			break;
+		case 'down':
+			break;
+	}
+	draw();
+}
+
 window.addEventListener('keyup', (event) => {
 	if (event.key === 'ArrowUp') {
 		moveCells('up');
