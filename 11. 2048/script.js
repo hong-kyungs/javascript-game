@@ -100,14 +100,23 @@ function moveCells(direction) {
 				// draw할 때 data를 drawg하기 떄문에 바꿔주는 주체는 newData가 아니고 data
 				rowData.forEach((cellData, j) => {
 					if (cellData) {
-						newData[i].push(cellData); // 데이터를 newData로 옮길 때 0을(빈칸을) 제외한 나머지 값들을 옮겨서 왼쪽 정렬 효과
+						//newData[i].push(cellData); 데이터를 newData로 옮길 때 0을(빈칸을) 제외한 나머지 값들을 옮겨서 왼쪽 정렬 효과
+						const currentRow = newData[i];
+						//값이 하나씩 push되어 들어가기 떄문에 지금 넣을 값의 이전 값은 현재줄의 마지막 값이 된다
+						const prevData = currentRow[currentRow.length - 1];
+						if (prevData === cellData) {
+							//이전 값과 지금 값이 같으면
+							currentRow[currentRow.length - 1] *= -2;
+						} else {
+							newData[i].push(cellData);
+						}
 					}
 				});
 			});
 			console.log(newData);
 			[1, 2, 3, 4].forEach((rowData, i) => {
 				[1, 2, 3, 4].forEach((cellData, j) => {
-					data[i][j] = newData[i][j] || 0;
+					data[i][j] = Math.abs(newData[i][j]) || 0;
 				});
 			});
 			break;
