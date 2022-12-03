@@ -85,7 +85,7 @@ window.addEventListener('mouseup', (event) => {
 data = [
 	[0, 2, 4, 2],
 	[0, 0, 8, 0],
-	[8, 4, 2, 2],
+	[2, 2, 2, 2],
 	[0, 16, 0, 4],
 ];
 draw();
@@ -146,8 +146,29 @@ function moveCells(direction) {
 			});
 			break;
 		}
-		case 'up':
+		case 'up': {
+			const newData = [[], [], [], []];
+			data.forEach((rowData, i) => {
+				rowData.forEach((cellData, j) => {
+					if (cellData) {
+						const currentRow = newData[j];
+						const prevData = currentRow[currentRow.length - 1];
+						if (prevData === cellData) {
+							currentRow[currentRow.length - 1] *= -2;
+						} else {
+							newData[j].push(cellData);
+						}
+					}
+				});
+			});
+			console.log(newData);
+			[1, 2, 3, 4].forEach((cellData, i) => {
+				[1, 2, 3, 4].forEach((rowData, j) => {
+					data[j][i] = Math.abs(newData[i][j]) || 0;
+				});
+			});
 			break;
+		}
 		case 'down':
 			break;
 	}
