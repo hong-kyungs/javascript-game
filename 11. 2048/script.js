@@ -1,6 +1,16 @@
 const $table = document.getElementById('table');
 const $score = document.getElementById('score');
+const $back = document.getElementById('back');
 let data = [];
+const history = [];
+
+$back.addEventListener('click', () => {
+	const prevData = history.pop();
+	if (!prevData) return; // 되돌릴 게 없으면 종료
+	$score.textContent = prevData.score;
+	data = prevData.table;
+	draw();
+});
 
 // fragment - 실전에서 화면을 조작할 떄 자주쓰는 표현
 //$table -> $fragment -> $tr -> $td
@@ -93,6 +103,12 @@ draw();
 */
 
 function moveCells(direction) {
+	//history에 이전 데이터, 점수 저장하기(push)
+	history.push({
+		table: JSON.parse(JSON.stringify(data)),
+		score: $score.textContent,
+	});
+
 	//case문에 {}를 사용한 이유
 	//블록스코프의 활용으로 newData를 블록안에서만 활용하기 위해서
 	//case 내부에서 const나 let을 사용할 때 중괄호{}를 넣는다
@@ -252,4 +268,3 @@ window.addEventListener('mouseup', (event) => {
 		moveCells('up');
 	}
 });
-``;
