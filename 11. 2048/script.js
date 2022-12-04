@@ -1,5 +1,5 @@
 const $table = document.getElementById('table');
-const $score = document.getElementById('scroe');
+const $score = document.getElementById('score');
 let data = [];
 
 // fragment - 실전에서 화면을 조작할 떄 자주쓰는 표현
@@ -82,6 +82,7 @@ window.addEventListener('mouseup', (event) => {
 
 //dummy data를 이용해서 test해보면서 코드를 짜는 것이 좋다.
 //dummy data를 원하는대로 바꾸면서 모든 경우에도 잘 작동하는지 테스트하면 된다.
+/*
 data = [
 	[32, 2, 4, 2],
 	[64, 4, 8, 4],
@@ -89,6 +90,7 @@ data = [
 	[32, 16, 64, 4],
 ];
 draw();
+*/
 
 function moveCells(direction) {
 	//case문에 {}를 사용한 이유
@@ -108,6 +110,9 @@ function moveCells(direction) {
 						const prevData = currentRow[currentRow.length - 1];
 						if (prevData === cellData) {
 							//이전 값과 지금 값이 같으면
+							const score = parseInt($score.textContent); //점수는 계산할 때 정렬한다
+							$score.textContent =
+								score + currentRow[currentRow.length - 1] * 2;
 							currentRow[currentRow.length - 1] *= -2;
 						} else {
 							newData[i].push(cellData);
@@ -131,6 +136,9 @@ function moveCells(direction) {
 						const currentRow = newData[i];
 						const prevData = currentRow[currentRow.length - 1];
 						if (prevData === rowData[3 - j]) {
+							const score = parseInt($score.textContent);
+							$score.textContent =
+								score + currentRow[currentRow.length - 1] * 2;
 							currentRow[currentRow.length - 1] *= -2;
 						} else {
 							newData[i].push(rowData[3 - j]);
@@ -154,6 +162,9 @@ function moveCells(direction) {
 						const currentRow = newData[j];
 						const prevData = currentRow[currentRow.length - 1];
 						if (prevData === cellData) {
+							const score = parseInt($score.textContent);
+							$score.textContent =
+								score + currentRow[currentRow.length - 1] * 2;
 							currentRow[currentRow.length - 1] *= -2;
 						} else {
 							newData[j].push(cellData);
@@ -177,6 +188,9 @@ function moveCells(direction) {
 						const currentRow = newData[j];
 						const prevData = currentRow[currentRow.length - 1];
 						if (prevData === data[3 - i][j]) {
+							const score = parseInt($score.textContent);
+							$score.textContent =
+								score + currentRow[currentRow.length - 1] * 2;
 							currentRow[currentRow.length - 1] *= -2;
 						} else {
 							newData[j].push(data[3 - i][j]);
@@ -201,7 +215,7 @@ function moveCells(direction) {
 		}, 50);
 	} else if (!data.flat().includes(0)) {
 		// 빈칸이 없으면 패배
-		alert('패배했습니다...');
+		alert(`패배했습니다... ${$score.textContent}점`);
 	} else {
 		put2ToRandomCell(); // 정렬 후 무작위 위치에 2를 생성하게 한다
 		draw();
@@ -238,3 +252,4 @@ window.addEventListener('mouseup', (event) => {
 		moveCells('up');
 	}
 });
+``;
