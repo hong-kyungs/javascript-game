@@ -83,10 +83,10 @@ window.addEventListener('mouseup', (event) => {
 //dummy data를 이용해서 test해보면서 코드를 짜는 것이 좋다.
 //dummy data를 원하는대로 바꾸면서 모든 경우에도 잘 작동하는지 테스트하면 된다.
 data = [
-	[0, 2, 4, 2],
-	[0, 0, 8, 0],
-	[2, 2, 2, 2],
-	[0, 16, 0, 4],
+	[32, 2, 4, 2],
+	[64, 4, 8, 4],
+	[2, 1024, 1024, 32],
+	[32, 16, 64, 4],
 ];
 draw();
 
@@ -193,7 +193,19 @@ function moveCells(direction) {
 			break;
 		}
 	}
-	draw();
+	if (data.flat().includes(2048)) {
+		//승리
+		draw();
+		setTimeout(() => {
+			alert('축하합니다. 2048을 만들었습니다!');
+		}, 50);
+	} else if (!data.flat().includes(0)) {
+		// 빈칸이 없으면 패배
+		alert('패배했습니다...');
+	} else {
+		put2ToRandomCell(); // 정렬 후 무작위 위치에 2를 생성하게 한다
+		draw();
+	}
 }
 
 window.addEventListener('keyup', (event) => {
