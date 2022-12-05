@@ -14,7 +14,7 @@ $back.addEventListener('click', () => {
 
 // fragment - 실전에서 화면을 조작할 떄 자주쓰는 표현
 //$table -> $fragment -> $tr -> $td
-// reateElement로 만들어서 실제 태그에 바로 추가(append)하는 방식은 추가해야 할 태그가 많다면 실무에서는 이러한 방식을 쓰지 않는 것이 좋. 실제 태그에 추가하는 횟수가 많아질수록 성능 문제가 생길 가능성이 높아집니다.
+// createElement로 만들어서 실제 태그에 바로 추가(append)하는 방식은 추가해야 할 태그가 많다면 실무에서는 이러한 방식을 쓰지 않는 것이 좋다. 실제 태그에 추가하는 횟수가 많아질수록 성능 문제가 생길 가능성이 높아집니다.
 // 그래서 메모리 안에만 존재하는 documentFragment를 만들고, 가상의 태그라고 봐도 된다. 그리고 documentFragment 안에 필요한 태그를 추가(append)한 뒤 마지막으로 $table로 한 번에 documentFragment를 추가하는 방식을 사용합니다. -> 한 번만 그려줘도 되서 성능이 좋다. 화면을 자주 그릴 것 같다면 fragment라는 가상의 부모태그를 만들어서 그 안에 추가한다. 실제화면에는 fragment 하나만 한번에!!
 function startGame() {
 	const $fragment = document.createDocumentFragment();
@@ -53,7 +53,7 @@ function put2ToRandomCell() {
 	data[randomCell[0]][randomCell[1]] = 2;
 }
 
-// 반복문으로 16칸을 화면에 그린다. 그리고 각 칸에 텍스트와 클래스르 부여한다
+// 반복문으로 16칸을 화면에 그린다. 그리고 각 칸에 텍스트와 클래스를 부여한다
 function draw() {
 	data.forEach((rowData, i) => {
 		rowData.forEach((cellData, j) => {
