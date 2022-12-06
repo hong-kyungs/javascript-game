@@ -51,3 +51,20 @@ function draw() {
 }
 
 startGame();
+
+//키보드와 마우스 이벤트 종류
+window.addEventListener('keydown', (event) => {
+	console.log('keydown', event);
+});
+window.addEventListener('keyup', (event) => {
+	console.log('keyup', event);
+});
+window.addEventListener('mousedown', (event) => {
+	console.log('mousedown', event);
+});
+window.addEventListener('mousemove', (event) => {
+	console.log('mousemove', event);
+});
+window.addEventListener('mouseup', (event) => {
+	console.log('mouseup', event);
+});
