@@ -72,6 +72,7 @@ function draw() {
 startGame();
 
 /*
+키보드와 마우스 이벤트 종류
 window.addEventListener('keydown', (event) => {
   console.log('keydown', event);
 });

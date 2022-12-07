@@ -52,24 +52,51 @@ function draw() {
 
 startGame();
 
-//키보드와 마우스 이벤트 종류
-// window.addEventListener('keydown', (event) => {
-// 	console.log('keydown', event);
-// });
-// window.addEventListener('keyup', (event) => {
-// 	console.log('keyup', event);
-// });
-// window.addEventListener('mousedown', (event) => {
-// 	console.log('mousedown', event);
-// });
-// window.addEventListener('mousemove', (event) => {
-// 	console.log('mousemove', event);
-// });
-// window.addEventListener('mouseup', (event) => {
-// 	console.log('mouseup', event);
-// });
+data = [
+	[0, 2, 4, 2],
+	[0, 0, 8, 0],
+	[2, 2, 4, 8],
+	[0, 16, 0, 4],
+];
+draw();
 
-function moveCells(direction) {}
+function moveCells(direction) {
+	switch (direction) {
+		case 'left': {
+			const newData = [[], [], [], []];
+			data.forEach((rowData, i) => {
+				rowData.forEach((cellData, j) => {
+					if (cellData) {
+						const currentRow = newData[i];
+						const prevData = currentRow[currentRow.length - 1];
+						if (prevData === cellData) {
+							// 이전값과 지금값이 같으면
+							currentRow[currentRow.length - 1] *= -2;
+						} else {
+							newData[i].push(cellData);
+						}
+					}
+				});
+			});
+			console.log(newData);
+
+			[1, 2, 3, 4].forEach((rowData, i) => {
+				[1, 2, 3, 4].forEach((cellData, j) => {
+					data[i][j] = Math.abs(newData[i][j]) || 0;
+				});
+			});
+
+			break;
+		}
+		case 'right':
+			break;
+		case 'up':
+			break;
+		case 'down':
+			break;
+	}
+	draw();
+}
 
 //키보드 이벤트
 window.addEventListener('keyup', (event) => {
