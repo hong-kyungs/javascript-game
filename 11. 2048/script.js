@@ -250,6 +250,9 @@ window.addEventListener('keyup', (event) => {
 	}
 });
 
+//마우스이벤트는 특정한 기준을 잡아야 방향을 판단할 수 있다
+//클릭한 순간(mousedown)의 좌표를 기준으로 삼고 이를 클릭했다가 뗐을때(mouseup)의 좌표와 비교해서 방향을 판단
+//clientX, clientY는 현재 브라우저 페이지 내에서의 x, y좌표를 가리킨다. pageX, pageY도 브라우저 페이지 내에서의 x,y좌표를 가리키지만, 스크롤이 있으면 스크롤한 픽셀 값까지 포함한다는 점이 clientX, clientY와 다르다
 let startCoord; // 시작 좌표
 window.addEventListener('mousedown', (event) => {
 	startCoord = [event.clientX, event.clientY];
