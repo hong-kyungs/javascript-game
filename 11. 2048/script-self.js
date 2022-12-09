@@ -56,7 +56,7 @@ data = [
 	[0, 2, 4, 2],
 	[0, 0, 4, 0],
 	[2, 2, 8, 8],
-	[0, 16, 0, 4],
+	[0, 16, 0, 8],
 ];
 draw();
 
@@ -132,8 +132,29 @@ function moveCells(direction) {
 			});
 			break;
 		}
-		case 'down':
+		case 'down': {
+			const newData = [[], [], [], []];
+			data.forEach((rowData, i) => {
+				rowData.forEach((cellData, j) => {
+					if (data[3 - i][j]) {
+						const currentRow = newData[j];
+						const prevData = currentRow[currentRow.length - 1];
+						if (prevData === data[3 - i][j]) {
+							currentRow[currentRow.length - 1] *= -2;
+						} else {
+							newData[j].push(data[3 - i][j]);
+						}
+					}
+				});
+			});
+			console.log(newData);
+			[1, 2, 3, 4].forEach((rowData, i) => {
+				[1, 2, 3, 4].forEach((cellData, j) => {
+					data[3 - j][i] = Math.abs(newData[i][j]) || 0;
+				});
+			});
 			break;
+		}
 	}
 	draw();
 }
