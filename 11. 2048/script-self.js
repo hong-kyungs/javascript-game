@@ -2,6 +2,18 @@ const $table = document.getElementById('table');
 const $score = document.getElementById('score');
 const $back = document.getElementById('back');
 let data = [];
+const history = [];
+let score = 0;
+const scoreHistory = [];
+
+$back.addEventListener('click', () => {
+	const prevData = history.pop();
+	const prevScore = scoreHistory.pop();
+	data = prevData;
+	score = prevScore;
+	$score.textContent = score;
+	draw();
+});
 
 //table -> fragment -> tr -> td
 function startGame() {
@@ -52,15 +64,17 @@ function draw() {
 
 startGame();
 
-data = [
-	[0, 2, 4, 2],
-	[0, 0, 4, 0],
-	[2, 2, 8, 8],
-	[0, 16, 0, 8],
-];
-draw();
+// data = [
+// 	[32, 2, 4, 2],
+// 	[64, 4, 8, 4],
+// 	[2, 1024, 1024, 32],
+// 	[32, 16, 64, 4],
+// ];
+// draw();
 
 function moveCells(direction) {
+	history.push(JSON.parse(JSON.stringify(data)));
+	scoreHistory.push(JSON.parse(JSON.stringify(score)));
 	switch (direction) {
 		case 'left': {
 			const newData = [[], [], [], []];
@@ -71,6 +85,8 @@ function moveCells(direction) {
 						const prevData = currentRow[currentRow.length - 1];
 						if (prevData === cellData) {
 							// 이전값과 지금값이 같으면
+							score += currentRow[currentRow.length - 1] * 2;
+							$score.textContent = score;
 							currentRow[currentRow.length - 1] *= -2;
 						} else {
 							newData[i].push(cellData);
@@ -94,6 +110,8 @@ function moveCells(direction) {
 						const currentRow = newData[i];
 						const prevData = currentRow[currentRow.length - 1];
 						if (prevData === rowData[3 - j]) {
+							score += currentRow[currentRow.length - 1] * 2;
+							$score.textContent = score;
 							currentRow[currentRow.length - 1] *= -2;
 						} else {
 							newData[i].push(rowData[3 - j]);
@@ -117,6 +135,8 @@ function moveCells(direction) {
 						const currentRow = newData[j];
 						const prevData = currentRow[currentRow.length - 1];
 						if (prevData === cellData) {
+							score += currentRow[currentRow.length - 1] * 2;
+							$score.textContent = score;
 							currentRow[currentRow.length - 1] *= -2;
 						} else {
 							newData[j].push(cellData);
@@ -140,6 +160,8 @@ function moveCells(direction) {
 						const currentRow = newData[j];
 						const prevData = currentRow[currentRow.length - 1];
 						if (prevData === data[3 - i][j]) {
+							score += currentRow[currentRow.length - 1] * 2;
+							$score.textContent = score;
 							currentRow[currentRow.length - 1] *= -2;
 						} else {
 							newData[j].push(data[3 - i][j]);
@@ -156,7 +178,19 @@ function moveCells(direction) {
 			break;
 		}
 	}
-	draw();
+	if (data.flat().includes(2048)) {
+		draw();
+		setTimeout(() => {
+			// 2048을 만들면 승리
+			alert('축하합니다. 2048을 만들었습니다.');
+		}, 50);
+	} else if (!data.flat().includes(0)) {
+		// 빈칸이 없으면 패배
+		alert(`패배했습니다. ${$score.textContent}점 입니다.`);
+	} else {
+		put2ToRandomCell(); // 무작위 위치에 2를 놓기
+		draw();
+	}
 }
 
 //키보드 이벤트

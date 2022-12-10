@@ -106,6 +106,7 @@ draw();
 function moveCells(direction) {
 	//history에 이전 데이터, 점수 저장하기(push)
 	history.push({
+		//참조 관계를 끊어야 
 		table: JSON.parse(JSON.stringify(data)),
 		score: $score.textContent,
 	});
