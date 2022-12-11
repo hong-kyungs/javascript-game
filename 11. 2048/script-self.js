@@ -3,15 +3,13 @@ const $score = document.getElementById('score');
 const $back = document.getElementById('back');
 let data = [];
 const history = [];
-let score = 0;
 const scoreHistory = [];
 
 $back.addEventListener('click', () => {
 	const prevData = history.pop();
-	const prevScore = scoreHistory.pop();
-	data = prevData;
-	score = prevScore;
-	$score.textContent = score;
+	if (!prevData) return; // 되돌릴게 없으면 종료
+	data = prevData.table;
+	$score.textContent = prevData.score;
 	draw();
 });
 
@@ -72,9 +70,12 @@ startGame();
 // ];
 // draw();
 
+let score = 0;
 function moveCells(direction) {
-	history.push(JSON.parse(JSON.stringify(data)));
-	scoreHistory.push(JSON.parse(JSON.stringify(score)));
+	history.push({
+		table: JSON.parse(JSON.stringify(data)),
+		score: JSON.parse(JSON.stringify(score)),
+	});
 	switch (direction) {
 		case 'left': {
 			const newData = [[], [], [], []];
