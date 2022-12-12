@@ -1,5 +1,9 @@
+#game {
+	margin-top: 10px;
+}
+
 .cell {
-	background: pink;
+	/* background: pink; */
 	display: inline-block;
 	position: relative;
 	width: 150px;
