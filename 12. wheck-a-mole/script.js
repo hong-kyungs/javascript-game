@@ -41,3 +41,25 @@ function tick() {
 		}
 	});
 }
+
+$$cells.forEach(($cell, index) => {
+	$cell.querySelector('.gopher').addEventListener('click', (event) => {
+		event.target.classList.add('dead');
+		event.target.classList.add('hidden');
+		//두더지가 올라는 중에 때리면 즉시 내려가야 하기 때문에 기존 1초 뒤에 사라지는 타이머는 제거해야 함
+		clearTimeout(holes[index]); //기존 내려가는 타이머 제거
+		setTimeout(() => {
+			holes[index] = 0;
+			event.target.classList.remove('dead');
+		}, 1000);
+	});
+	$cell.querySelector('.bomb').addEventListener('click', (event) => {
+		event.target.classList.add('boom');
+		event.target.classList.add('hidden');
+		clearTimeout(holes[index]);
+		setTimeout(() => {
+			holes[index] = 0;
+			event.target.classList.remove('boom');
+		}, 1000);
+	});
+});
