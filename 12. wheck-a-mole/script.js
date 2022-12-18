@@ -1,5 +1,6 @@
 const $timer = document.querySelector('#timer');
 const $score = document.querySelector('#score');
+const $life = document.querySelector('#life');
 const $game = document.querySelector('#game');
 const $start = document.querySelector('#start');
 const $$cells = document.querySelectorAll('.cell');
@@ -7,12 +8,26 @@ const $$cells = document.querySelectorAll('.cell');
 const holes = [0, 0, 0, 0, 0, 0, 0, 0, 0]; //1차원 배열로
 let started = false;
 let score = 0;
+let time = 60;
+let life = 3;
 $start.addEventListener('click', () => {
 	if (started) return; // 이미 시작했으면 무시
 	started = true;
 	console.log('시작');
+	$life.textContent = life;
 	const tickId = setInterval(tick, 1000);
 	tick();
+	const timeId = setInterval(() => {
+		time = (time * 10 - 1) / 10; // time -= 0.1 로 해줄 수 도 있지만 컴퓨터는 소수점 계산시 문제가 있기에 이와같은 식으로 처리
+		$timer.textContent = time;
+		if (time === 0 || life === 0) {
+			setTimeout(() => {
+				clearInterval(timeId);
+				clearInterval(tickId);
+				alert(`게임 오버! 점수는 ${score}점`);
+			}, 50);
+		}
+	}, 100);
 });
 
 let gopherPercent = 0.3;
@@ -44,9 +59,13 @@ function tick() {
 
 $$cells.forEach(($cell, index) => {
 	$cell.querySelector('.gopher').addEventListener('click', (event) => {
+		if (!event.target.classList.contains('dead')) {
+			score += 1;
+			$score.textContent = score;
+		}
 		event.target.classList.add('dead');
 		event.target.classList.add('hidden');
-		//두더지가 올라는 중에 때리면 즉시 내려가야 하기 때문에 기존 1초 뒤에 사라지는 타이머는 제거해야 함
+		//두더지가 올라오는 중에 때리면 즉시 내려가야 하기 때문에 기존 1초 뒤에 사라지는 타이머는 제거해야 함
 		clearTimeout(holes[index]); //기존 내려가는 타이머 제거
 		setTimeout(() => {
 			holes[index] = 0;
@@ -54,6 +73,10 @@ $$cells.forEach(($cell, index) => {
 		}, 1000);
 	});
 	$cell.querySelector('.bomb').addEventListener('click', (event) => {
+		if (!event.target.classList.contains('boom')) {
+			life -= 1;
+			$life.textContent = life;
+		}
 		event.target.classList.add('boom');
 		event.target.classList.add('hidden');
 		clearTimeout(holes[index]);
