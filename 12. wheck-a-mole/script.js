@@ -8,26 +8,28 @@ const $$cells = document.querySelectorAll('.cell');
 const holes = [0, 0, 0, 0, 0, 0, 0, 0, 0]; //1차원 배열로
 let started = false;
 let score = 0;
-let time = 60;
+let time = 10;
 let life = 3;
+let timerId;
+let tickId;
 $start.addEventListener('click', () => {
 	if (started) return; // 이미 시작했으면 무시
 	started = true;
 	console.log('시작');
 	$life.textContent = life;
-	const tickId = setInterval(tick, 1000);
-	tick();
-	const timeId = setInterval(() => {
+	timerId = setInterval(() => {
 		time = (time * 10 - 1) / 10; // time -= 0.1 로 해줄 수 도 있지만 컴퓨터는 소수점 계산시 문제가 있기에 이와같은 식으로 처리
 		$timer.textContent = time;
-		if (time === 0 || life === 0) {
+		if (time === 0) {
 			setTimeout(() => {
-				clearInterval(timeId);
+				clearInterval(timerId);
 				clearInterval(tickId);
 				alert(`게임 오버! 점수는 ${score}점`);
 			}, 50);
 		}
 	}, 100);
+	tickId = setInterval(tick, 1000);
+	tick();
 });
 
 let gopherPercent = 0.3;
@@ -84,5 +86,12 @@ $$cells.forEach(($cell, index) => {
 			holes[index] = 0;
 			event.target.classList.remove('boom');
 		}, 1000);
+		if (life === 0) {
+			clearInterval(timerId);
+			clearInterval(tickId);
+			setTimeout(() => {
+				alert(`게임 오버! 점수는 ${score}점`);
+			}, 50);
+		}
 	});
 });
