@@ -34,6 +34,7 @@ $start.addEventListener('click', () => {
 
 let gopherPercent = 0.3;
 let bombPercent = 0.5;
+//두더지, 폭탄이 1초간격으로 나왔다가 들어갔다 하게 하는 함수
 function tick() {
 	holes.forEach((hole, index) => {
 		//holes 배열안에 값이 있으면 두더지가 보이는 상황이므로 이때는 타이머를 추가하지 않는다
