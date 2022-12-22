@@ -38,3 +38,25 @@ function tick() {
 		}
 	});
 }
+
+$$cells.forEach(($cell, index) => {
+	$cell.querySelector('.gopher').addEventListener('click', (event) => {
+		event.target.classList.add('dead');
+		event.target.classList.add('hidden');
+		clearTimeout(holes[index]);
+		setTimeout(() => {
+			event.target.classList.remove('dead');
+			holes[index] = 0;
+		}, 1000);
+	});
+
+	$cell.querySelector('.bomb').addEventListener('click', (event) => {
+		event.target.classList.add('boom');
+		event.target.classList.add('hidden');
+		clearTimeout(holes[index]);
+		setTimeout(() => {
+			event.target.classList.remove('boom');
+			holes[index] = 0;
+		}, 1000);
+	});
+});
