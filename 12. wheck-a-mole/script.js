@@ -42,6 +42,7 @@ function tick() {
 		const randomValue = Math.random();
 		if (randomValue < gopherPercent) {
 			const $gopher = $$cells[index].querySelector('.gopher');
+			//타이머가 등록되어 있으면 0이 아닌 값이 배열에 기록되고, 타이머가 없으면 0이 들어있으므로 각칸에 두더지가 있는지 없는지 구분할 수 있다
 			holes[index] = setTimeout(() => {
 				// 1초 뒤에 사라짐
 				$gopher.classList.add('hidden');
