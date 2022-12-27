@@ -9,20 +9,24 @@ const holes = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 let started = false;
 let score = 0;
 let time = 10;
+let life = 3;
+let tickId;
+let timerId;
 $start.addEventListener('click', () => {
 	if (started) return; //한번 시작했으면 시작버튼 무시
 	started = true;
 	console.log('시작');
-	const tickId = setInterval(tick, 1000);
+	tickId = setInterval(tick, 1000);
 	$timer.textContent = time;
-	const timerId = setInterval(() => {
+	$life.textContent = life;
+	timerId = setInterval(() => {
 		time = (time * 10 - 1) / 10;
 		$timer.textContent = time;
 		if (time === 0) {
+			clearInterval(tickId);
+			clearInterval(timerId);
 			setTimeout(() => {
 				alert(`게임 오버! 점수는 ${score}입니다.`);
-				clearInterval(tickId);
-				clearInterval(timerId);
 			}, 50);
 		}
 	}, 100);
@@ -69,6 +73,18 @@ $$cells.forEach(($cell, index) => {
 	});
 
 	$cell.querySelector('.bomb').addEventListener('click', (event) => {
+		if (!event.target.classList.contains('boom')) {
+			life -= 1;
+			$life.textContent = life;
+		}
+		if (life === 0) {
+			clearInterval(tickId);
+			clearInterval(timerId);
+			setTimeout(() => {
+				alert(`게임 오버! 점수는 ${score}입니다.`);
+			}, 50);
+			$timer.textContent = 0;
+		}
 		event.target.classList.add('boom');
 		event.target.classList.add('hidden');
 		clearTimeout(holes[index]);
