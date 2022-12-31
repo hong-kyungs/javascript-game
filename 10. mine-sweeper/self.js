@@ -249,7 +249,7 @@ function drawTable() {
 		row.forEach((cell) => {
 			const $td = document.createElement('td');
 			if (cell === CODE.MINE) {
-				// $td.textContent = 'X'; // 개발 편의를 위해 일단 지뢰위치 표시, 개발자모드
+				//$td.textContent = 'X'; // 개발 편의를 위해 일단 지뢰위치 표시, 개발자모드
 			}
 			$tr.append($td);
 		});

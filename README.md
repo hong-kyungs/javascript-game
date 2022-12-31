@@ -114,7 +114,7 @@ const bonus = shuffle[6]
 
 ---
 
-## 4. 가위바위보
+## 5. 가위바위보
 
 > 컴퓨터의 가위바위보 손이 빠르게 돌아가게 하고, 버튼을 눌러 내 가위바위보를 내면 멈춰서 누가 이겼는지 확인.
 
@@ -150,7 +150,7 @@ if (diff === -1 || diff === 2) {
 
 ---
 
-## 5. 반응 속도 테스트
+## 6. 반응 속도 테스트
 
 > 반응속도가 얼마나 빠른지 확인하는 반응속도 테스트 프로그램.  
 > 파랑화면 - 대기화면, 빨강화면 - 준비화면, 초록화면 - 초록 화면을 보자마자 클릭하면 초록 화면이 뜬 시각과 클릭한 시각의 차이를 구해 반응속도를 측정
@@ -189,7 +189,7 @@ clearTimeout(timeoutId)
 
 clearTimeout을 사용하여 타이머가 필요없을때는 없애줌
 
-## 6. tic-tac-toe 게임
+## 7. tic-tac-toe 게임
 
 > 오목의 축소판인 삼목게임으로, 바둑판이 아니라 3 × 3 표 위에서 진행 (이차원 배열로 표현).
 > 바둑에 검은 돌과 흰 돌이 있듯이 틱택토에는 O와 X가 있다.
@@ -209,7 +209,7 @@ if (draw) {
 }
 ```
 
-## 8. concentration game - 카드 맞추기
+## 9. concentration game - 카드 맞추기
 
 > 짝 맞추기 게임. 모든 카드의 색을 보여 주며 잠깐 동안 카드 짝을 외울 수 있는 시간을 주고 나서, 카드를 다시 전부 뒤집은 뒤 짝을 맞추게 하는 게임.
 
@@ -248,3 +248,113 @@ function resetGame() {
 ```
 
 ---
+
+## 10. mine-sweeper (지뢰찾기)
+
+> 게임판이 칸으로 나뉘어 있고, 무작위한 칸에 지뢰가 깔려있다. 게임을 클리어 하려면 지뢰가 있는 칸을 제외한 다른 모든 칸을 클릭해서 열어야 한다. 지뢰가 없는 칸을 열면 숫자가 써져 있는데, 이 숫자는 이웃한 칸에 있는 지뢰의 개수를 뜻한다. 이 숫자로 지뢰가 있는 칸과 없는 칸을 구별하고, 지뢰가 있을 것이라 예상되는 칸에는 우클릭으로 물음표를 한번 더 우클릭하면 깃발을 세워 표시할 수 있습니다.
+
+<img src="image/mine-sweeper.gif" width="230" height="180"/>
+
+1. 줄, 칸, 지뢰개수 조절하여 생성하기
+
+```js
+  function onSubmit(event) {
+	event.preventDefault();
+	row = parseInt(event.target.row.value);
+	cell = parseInt(event.target.cell.value);
+	mine = parseInt(event.target.mine.value);
+	...
+}
+```
+
+2. 우클릭으로 깃발 꽂기
+
+   > 빈 칸에서 마우스로 우클릭을 한 번 하면 물음표 칸이 되고, 다시 한 번 우클릭을 하면 깃발 칸이 된다. 여기서 다시 우클릭을 하면 일반 칸으로 되돌아온다.
+
+   - 칸 상태에 따른 코드정리
+
+   | 종류              | 코드 숫자 | 코드 이름     |
+   | ----------------- | --------- | ------------- |
+   | 열린 칸           | 0~8       | OPENED        |
+   | 닫힌 칸(지뢰X)    | -1        | NORMAL        |
+   | 물음표 칸(지뢰 X) | -2        | QUESTION      |
+   | 깃발 칸(지뢰 X)   | -3        | FLAG          |
+   | 물음표 칸(지뢰 O) | -4        | QUESTION_MINE |
+   | 깃발 칸(지뢰 O)   | -5        | FLAG_MINE     |
+   | 닫힌 칸(지뢰 O)   | -6        | MINE          |
+
+   ```js
+   const CODE = {
+     NORMAL: -1,
+     QUESTION: -2,
+     FLAG: -3,
+     QUESTION_MINE: -4,
+     FLAG_MINE: -5,
+     MINE: -6,
+     OPENED: 0, // 0 이상이면 모두 열린 칸
+   }
+   ```
+
+   ```js
+   if (cellData === CODE.MINE) {
+     // 지뢰면
+     data[rowIndex][cellIndex] = CODE.QUESTION_MINE // 물음표 지뢰로
+     target.className = 'question'
+     target.textContent = '?'
+   } else if (cellData === CODE.QUESTION_MINE) {
+     // 물음표 지뢰면
+     data[rowIndex][cellIndex] = CODE.FLAG_MINE // 깃발 지뢰로
+     target.className = 'flag'
+     target.textContent = '!'
+   } else if (cellData === CODE.FLAG_MINE) {
+     // 깃발 지뢰면
+     data[rowIndex][cellIndex] = CODE.MINE // 지뢰로
+     target.className = ''
+     target.textContent = 'X'
+   } else if (cellData === CODE.NORMAL) {
+     // 닫힌 칸이면
+     data[rowIndex][cellIndex] = CODE.QUESTION // 물음표로
+     target.className = 'question'
+     target.textContent = '?'
+   } else if (cellData === CODE.QUESTION) {
+     // 물음표면
+     data[rowIndex][cellIndex] = CODE.FLAG // 깃발으로
+     target.className = 'flag'
+     target.textContent = '!'
+   } else if (cellData === CODE.FLAG) {
+     // 깃발이면
+     data[rowIndex][cellIndex] = CODE.NORMAL // 닫힌 칸으로
+     target.className = ''
+     target.textContent = ''
+   }
+   ```
+
+3. 좌클릭시 주변 지뢰 개수 구하고 칸열기
+
+   > 옵셔널 체이닝 '?.'을 사용하여 에러 피하기
+
+   ```js
+   function countMine(rowIndex, cellIndex) {
+     const mines = [CODE.MINE, CODE.QUESTION_MINE, CODE.FLAG_MINE]
+     let i = 0
+     mines.includes(data[rowIndex - 1]?.[cellIndex - 1]) && i++
+     mines.includes(data[rowIndex - 1]?.[cellIndex]) && i++
+     mines.includes(data[rowIndex - 1]?.[cellIndex + 1]) && i++
+     mines.includes(data[rowIndex][cellIndex - 1]) && i++
+     mines.includes(data[rowIndex][cellIndex + 1]) && i++
+     mines.includes(data[rowIndex + 1]?.[cellIndex - 1]) && i++
+     mines.includes(data[rowIndex + 1]?.[cellIndex]) && i++
+     mines.includes(data[rowIndex + 1]?.[cellIndex + 1]) && i++
+     return i
+   }
+   ```
+
+4. 승리 확인하기
+   > 모든 칸을 열었을 때 승리했다고 사용자에게 알려주기
+
+```js
+  if (openCount === row * cell - mine) {
+    setTimeout(() => {
+      alert(`승리했습니다! ${time}초가 걸렸습니다.`);
+    }, 0);
+```
